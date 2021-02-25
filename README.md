@@ -2,7 +2,7 @@
 web based media gallery
 
 # Accessing media on server
-On Linux, if Apache2 webserver is used (and potentially other webservers), any folder that will have media provided throught the webserver needs to have executable access in it [[1]](https://askubuntu.com/questions/688538/how-to-allow-apache-to-access-another-directory-ouside-html-www). This allows access through the web browser not to be blocked.
+On Linux, if Apache2 webserver is used (and potentially other webservers), any folder that will have media provided throught the webserver needs to have executable access in it [[1]](https://askubuntu.com/questions/688538/how-to-allow-apache-to-access-another-directory-ouside-html-www). This allows access through the web browser not to be blocked. Possibly these access settings need to be applied to a few levels of parent directories of the folder of interest, based on the author's personal experience of testing the settings.
 
 A way to create that is:
 
