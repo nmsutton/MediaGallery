@@ -1,7 +1,7 @@
 <html>
 <head>
 <?php 
-	$origdir = 'http://localhost'; 
+	$origdir = 'file:///var/www/html/general/medialink/basedir'; 
 	$extpattern = '/.*[.][a-zA-Z0-9]+/s';
 	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+/s';
 	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+/s';
@@ -57,7 +57,8 @@
 	if ($handle = opendir($basedir)) {
 	    while (false !== ($entry = readdir($handle))) {
 	        if ($entry != "." && $entry != ".." && preg_match($imgpattern, $entry)) {
-            	echo "<a href='javascript:viewimg(\"$basedir/$entry\")'>$entry</a><br>";
+	        	$basedir2 = str_replace('/var/www/html', '', $basedir);
+            	echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'>$entry</a><br>";
 	        }
 	    }
 	    closedir($handle);
@@ -71,7 +72,8 @@
 	if ($handle = opendir($basedir)) {
 	    while (false !== ($entry = readdir($handle))) {
 	        if ($entry != "." && $entry != ".." && preg_match($vidpattern, $entry)) {
-            	echo "<a href='javascript:viewvid(\"$basedir/$entry\")'>$entry</a><br>";
+	        	$basedir2 = str_replace('/var/www/html', '', $basedir);
+            	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>$entry</a><br>";
 	        }
 	    }
 	    closedir($handle);
