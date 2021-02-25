@@ -8,9 +8,9 @@ A way to create that is:
 
 `$ sudo chmod +x <target_folder>`
 
-where <target_folder> is the folder of interest.
+where \<target_folder\> is the folder of interest.
 
-Possibly read-write access to all users in the <target-folder> is recommended too.
+Possibly read-write access to all users in the \<target-folder\> is recommended too.
 
 For example:
 
