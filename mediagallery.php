@@ -78,6 +78,10 @@
 	}
 	// display back and home links
 	$updir = preg_replace('/(.*)\/.*$/', '$1', $basedir);
+	// do not go past home directory
+	if ($updir == preg_replace('/(.*)\/.*$/', '$1', $origdir)) {
+		$updir = $origdir;
+	}
 	echo "<a href='javascript:subform(\"$updir\")'>up</a><br>";
 	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'>back</a><br>";	
 	echo "<a href='javascript:subform(\"$origdir\")'>home</a><br>";
