@@ -20,3 +20,22 @@ If the \<target_folder\> is outside of the webserver directory, a softlink shoul
 
 # Password security
 On your local system rename dbaccess_example.php to dbaccess.php and enter your username and password for database access used to access the mediagallery database. Note: dbaccess.php is in the gitignore file to avoid password credentials being uploaded to the source control website.
+
+Individual folders can be password protected using the method described [here](https://electrictoolbox.com/apache-password-protect-directory/). In breif:
+
+apache2.conf
+
+`<Directory [target_folder]>
+    AuthUserFile [/path/to/.htpasswd]
+    AuthName "Restricted Access"
+    AuthType Basic
+    require user [username]
+</Directory>`
+
+create password file:
+
+Navigate to folder where file should be located. 
+
+`htpasswd -c .htpasswd [username]`
+
+This will create a file named .htpasswd that stores the password.
