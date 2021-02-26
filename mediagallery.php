@@ -3,6 +3,7 @@
 <?php
 	include ("dbaccess.php");
 
+	// logout
 	if (isset($_GET['logout'])) {
 		if ($_GET['logout'] == 'true') {
 			$_SESSION["code"] = '';
@@ -21,17 +22,17 @@
 	if (isset($_REQUEST['basedir'])) {
 		$_SESSION['basedir'] = $_REQUEST['basedir'];
 	}
+	if (isset($_REQUEST['prevdir'])) {
+		$_SESSION['prevdir'] = $_REQUEST['prevdir'];
+	}
 ?>	
 <style>
 	body {background-color: black;}
 </style>
 <script>
-	function goback() {
-		window.history.go(-1); 
-		return false;
-	}	
 	function subform(link) {
 		document.getElementById("basedir").value = link;
+		document.getElementById("prevdir").value = <?php echo "'".$_SESSION['basedir']."'" ?>;
 		document.forms["setdir"].submit();
 	}
 	function viewimg(link) {
@@ -68,16 +69,19 @@
 		</form>";		
 		exit;
 	}
-	// display back and home links
-	echo "<a href='javascript:goback()'>back</a><br>";
-	echo "<a href='javascript:subform(\"$origdir\")'>home</a><br>";
-	// collect files and sort	
+	// collect files
 	if (isset($_REQUEST["basedir"])) {
 		$basedir = $_REQUEST["basedir"];
 	}
 	else {
 		$basedir = $origdir;
 	}
+	// display back and home links
+	$updir = preg_replace('/(.*)\/.*$/', '$1', $basedir);
+	echo "<a href='javascript:subform(\"$updir\")'>up</a><br>";
+	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'>back</a><br>";	
+	echo "<a href='javascript:subform(\"$origdir\")'>home</a><br>";
+	// sort	
 	if ($handle = opendir($basedir)) {
 		while (false !== ($entry = readdir($handle))) {
 			if ($entry != "." && $entry != "..") {
@@ -91,6 +95,7 @@
 <!-- directories -->
 <form name='setdir' action='mediagallery.php' method = "POST">
 <input type="hidden" name="basedir" id="basedir">
+<input type="hidden" name="prevdir" id="prevdir">
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
