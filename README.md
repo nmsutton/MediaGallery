@@ -15,3 +15,6 @@ Possibly read-write access to all users in the \<target-folder\> is recommended 
 For example:
 
 `$ sudo chmod 777 <target_folder>`
+
+# Password security
+On your local system rename dbaccess_example.php to dbaccess.php and enter your username and password for database access used to access the mediagallery database. Note: dbaccess.php is in the gitignore file to avoid password credentials being uploaded to the source control website.
