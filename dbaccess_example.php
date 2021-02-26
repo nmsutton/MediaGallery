@@ -6,8 +6,6 @@
 	$username = "";
 	$password = "";
 	$database = "mediagallery";
-	$codesession = '';
-	$codedb = '';
 	// Create connection
 	if(is_null($conn)){
 		$conn = mysqli_connect($servername, $username, $password, $database);   

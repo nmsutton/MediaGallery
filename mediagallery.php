@@ -2,13 +2,20 @@
 <head>
 <?php
 	include ("dbaccess.php");
+
+	if (isset($_GET['logout'])) {
+		if ($_GET['logout'] == 'true') {
+			$_SESSION["code"] = '';
+		}
+	}
 ?>
 
 <?php 
-	$origdir = 'file:///general/software/general/medialink/basedir'; 
+	$origdir = 'file:///var/www/html/general/medialink/medialink2';  
 	$extpattern = '/.*[.][a-zA-Z0-9]+/s';
 	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+/s';
 	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+/s';
+	$codedb = '';
 ?>	
 <style>
 	body {background-color: black;}
@@ -34,16 +41,8 @@
 </head>
 <body>
 <?php
-	echo "
-	<form name='setcode' action='mediagallery.php' method='POST'>
-	<center>
-	<br><br><input textarea name='code' id='code' style='font-size:28px'></input>
-	<input type='submit' value='go' style='font-size:28px' />
-	</center>
-	</form>";
-	
 	if (isset($_POST['code'])) {
-		$codesession = $_POST['code'];
+		$_SESSION["code"] = $_POST['code'];
 	}
 	$query = "SELECT DISTINCT code FROM access";	
 	$rs = mysqli_query($GLOBALS['conn'],$query);
@@ -51,10 +50,14 @@
 	{	
 		$codedb = $code;
 	}
-	if ($codesession == $codedb) {
-		echo "";
-	}
-	else {
+	if ($_SESSION["code"] != $codedb) { 
+		echo "
+		<form name='setcode' action='mediagallery.php' method='POST'>
+		<center>
+		<br><br><input textarea name='code' id='code' style='font-size:28px'></input>
+		<input type='submit' value='go' style='font-size:28px' />
+		</center>
+		</form>";		
 		exit;
 	}
 ?>
