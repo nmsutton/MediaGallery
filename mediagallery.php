@@ -16,6 +16,10 @@
 	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+/s';
 	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+/s';
 	$codedb = '';
+
+	if (isset($_REQUEST['basedir'])) {
+		$_SESSION['basedir'] = $_REQUEST['basedir'];
+	}
 ?>	
 <style>
 	body {background-color: black;}
@@ -31,10 +35,12 @@
 	}
 	function viewimg(link) {
 		document.getElementById("image").value = link;
+		document.getElementById("basedirimg").value = <?php echo "'".$_SESSION['basedir']."'" ?>;
 		document.forms["setimg"].submit();
 	}
 	function viewvid(link) {
 		document.getElementById("video").value = link;
+		document.getElementById("basedirvid").value = <?php echo "'".$_SESSION['basedir']."'" ?>;
 		document.forms["setvid"].submit();
 	}
 </script>
@@ -87,6 +93,7 @@
 </form>
 <form name='setimg' action='imageviewer.php' method = "POST">
 <input type="hidden" name="image" id="image">
+<input type="hidden" name="basedirimg" id="basedirimg">
 <?php
 	/* images */
 	if ($handle = opendir($basedir)) {
@@ -102,6 +109,7 @@
 </form>
 <form name='setvid' action='videoviewer.php' method = "POST">
 <input type="hidden" name="video" id="video">
+<input type="hidden" name="basedirvid" id="basedirvid">
 <?php
 	/* videos */
 	if ($handle = opendir($basedir)) {

@@ -1,6 +1,7 @@
 <html>
 <head>
 <style>
+	body {background-color: black;}
 </style>
 </head>
 <body>
@@ -16,5 +17,9 @@
 	}
 ?>
 </center>
+<form name='setdir' action='mediagallery.php' method = "POST">
+<input type="submit" value="back" style="position:absolute;top:0px;left:0px;font-size:28px" />
+<input type="hidden" name="basedir" id="basedir" value=<?php echo "'".$_REQUEST['basedirvid']."'" ?>>
+</form>
 </body>
 </html>
