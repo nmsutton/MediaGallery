@@ -16,6 +16,7 @@
 	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+/s';
 	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+/s';
 	$codedb = '';
+	$filelist = array();
 
 	if (isset($_REQUEST['basedir'])) {
 		$_SESSION['basedir'] = $_REQUEST['basedir'];
@@ -47,6 +48,7 @@
 </head>
 <body>
 <?php
+	// process login
 	if (isset($_POST['code'])) {
 		$_SESSION["code"] = $_POST['code'];
 	}
@@ -66,60 +68,60 @@
 		</form>";		
 		exit;
 	}
-?>
-<?php
+	// display back and home links
 	echo "<a href='javascript:goback()'>back</a><br>";
 	echo "<a href='javascript:subform(\"$origdir\")'>home</a><br>";
+	// collect files and sort	
 	if (isset($_REQUEST["basedir"])) {
 		$basedir = $_REQUEST["basedir"];
 	}
 	else {
 		$basedir = $origdir;
 	}
+	if ($handle = opendir($basedir)) {
+		while (false !== ($entry = readdir($handle))) {
+			if ($entry != "." && $entry != "..") {
+				array_push($filelist, $entry);
+			}
+		}
+	    closedir($handle);
+	}
+	sort($filelist);
 ?>
+<!-- directories -->
 <form name='setdir' action='mediagallery.php' method = "POST">
 <input type="hidden" name="basedir" id="basedir">
 <?php
-	/* directories */
-	if ($handle = opendir($basedir)) {
-	    while (false !== ($entry = readdir($handle))) {
-	        if ($entry != "." && $entry != ".." && !preg_match($extpattern, $entry)) {
-            	echo "<a href='javascript:subform(\"$basedir/$entry\")'>$entry</a><br>";
-	        }
-	    }
-	    closedir($handle);
+	foreach ($filelist as $entry) {
+		if (!preg_match($extpattern, $entry)) {
+			echo "<a href='javascript:subform(\"$basedir/$entry\")'>$entry</a><br>";
+		}
 	}
 ?>
 </form>
+<!-- images -->
 <form name='setimg' action='imageviewer.php' method = "POST">
 <input type="hidden" name="image" id="image">
 <input type="hidden" name="basedirimg" id="basedirimg">
 <?php
-	/* images */
-	if ($handle = opendir($basedir)) {
-	    while (false !== ($entry = readdir($handle))) {
-	        if ($entry != "." && $entry != ".." && preg_match($imgpattern, $entry)) {
-	        	$basedir2 = str_replace('/var/www/html', '', $basedir);
-            	echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'>$entry</a><br>";
-	        }
-	    }
-	    closedir($handle);
+	foreach ($filelist as $entry) {
+		if (preg_match($imgpattern, $entry)) {
+			$basedir2 = str_replace('/var/www/html', '', $basedir);
+            echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'>$entry</a><br>";
+		}
 	}
 ?>
 </form>
+<!-- videos -->
 <form name='setvid' action='videoviewer.php' method = "POST">
 <input type="hidden" name="video" id="video">
 <input type="hidden" name="basedirvid" id="basedirvid">
 <?php
-	/* videos */
-	if ($handle = opendir($basedir)) {
-	    while (false !== ($entry = readdir($handle))) {
-	        if ($entry != "." && $entry != ".." && preg_match($vidpattern, $entry)) {
-	        	$basedir2 = str_replace('/var/www/html', '', $basedir);
-            	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>$entry</a><br>";
-	        }
-	    }
-	    closedir($handle);
+	foreach ($filelist as $entry) {
+		if (preg_match($vidpattern, $entry)) {
+        	$basedir2 = str_replace('/var/www/html', '', $basedir);
+        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>$entry</a><br>";
+		}
 	}
 ?>
 </form>
