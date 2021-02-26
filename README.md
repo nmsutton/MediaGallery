@@ -25,12 +25,17 @@ Individual folders can be password protected using the method described [here](h
 
 apache2.conf
 
-`<Directory [target_folder]>
-    AuthUserFile [/path/to/.htpasswd]
-    AuthName "Restricted Access"
-    AuthType Basic
-    require user [username]
-</Directory>`
+`<Directory [target_folder]>`
+
+`    AuthUserFile [/path/to/.htpasswd]`
+
+`    AuthName "Restricted Access"`
+
+`    AuthType Basic`
+
+`    require user [username]`
+
+`</Directory>`
 
 create password file:
 
