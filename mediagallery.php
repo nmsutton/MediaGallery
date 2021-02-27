@@ -52,7 +52,7 @@
 	.foldericon {
 		position:relative;
 		float:left;
-		width: 100px;
+		width: auto;  
 		height: 200px;
 		background-color: darkgrey;
 		word-wrap: break-word;
@@ -135,8 +135,26 @@
 	    closedir($handle);
 	}
 	sort($filelist);
-	function foldericon($link) {
+	function foldericon($link, $imgpattern) {
 		$foldericon = "<span class='foldericon'>$link</span>";
+
+		$icondir = $_SESSION['basedir']."/"."$link/icon/";
+		//echo $icondir."<br>";
+		$iconlist = array();
+		if ($handle = opendir($icondir)) {
+			while (false !== ($entry = readdir($handle))) {
+				if ($entry != "." && $entry != ".." && preg_match($imgpattern, $entry)) {
+					array_push($iconlist, $entry);
+				}
+			}
+		    closedir($handle);
+		}
+		if ($iconlist[0] != "") {
+			$icon = $icondir."/".$iconlist[0];
+			$icon2 = str_replace('file://', '', "$icon");			
+			$icon3 = str_replace('/var/www/html', '', "$icon2");
+			$foldericon = "<img src='$icon3' class='foldericon' />";
+		}
 
 		return $foldericon;
 	}
@@ -153,7 +171,7 @@
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
-			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry")."</a>";
+			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry", $imgpattern)."</a>";
 		}
 	}
 ?>
@@ -180,7 +198,7 @@
 	foreach ($filelist as $entry) {
 		if (preg_match($vidpattern, $entry)) {
         	$basedir2 = str_replace('/var/www/html', '', $basedir);
-        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry")."</a>";
+        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $imgpattern)."</a>";
 		}
 	}
 ?>
