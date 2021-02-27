@@ -28,8 +28,28 @@
 	}
 ?>	
 <style>
-	body {background-color: black;}
-
+	body {
+		background-color: black;
+		color: #3a4472;
+		font-size: 48px;
+		font-family: arial;
+	}
+	textarea {
+		background-color: black;
+		color: #3a4472;
+		font-size: 48px;
+		font-family: arial;
+		overflow:hidden;
+		border: 3px rgb(55,55,55) solid;
+	}
+	input[type='button'] {
+		background-color: rgb(25,25,25);
+		color: #3a4472;
+		font-size: 48px;
+		font-family: arial;
+		border: 3px rgb(55,55,55) solid;
+		width:650px;
+	}
 	/* icon settings */
 	.icon {
 		position:relative;
@@ -54,18 +74,19 @@
 		position:relative;
 		float:left;
 		width: auto;  
-		height: 250px;
-		background-color: darkgrey;
+		height: 246px;
+		background-color: black;
 		word-wrap: break-word;
 		font-size: 26px;
 		line-height: 250px;
+		border:2px solid darkgrey;
 	}
 	.videoicon {
 		position:relative;
 		float:left;
 		width: auto;  
 		height: 246px;
-		background-color: darkgrey;
+		background-color: black;
 		word-wrap: break-word;
 		border:2px solid lightblue;
 	}

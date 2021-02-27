@@ -1,8 +1,34 @@
 <html>
 <head>
 <style>	
-	#responsive-image {  width: auto;  height: 100%; } 
-	body {background-color: black;}
+	body {
+		background-color: black;
+		color: #3a4472;
+		font-size: 48px;
+		font-family: arial;
+	}
+	textarea {
+		background-color: black;
+		color: #3a4472;
+		font-size: 48px;
+		font-family: arial;
+		overflow:hidden;
+		border: 3px rgb(55,55,55) solid;
+	}
+	input[type='button'] {
+		background-color: rgb(25,25,25);
+		color: #3a4472;
+		font-size: 30px;
+		font-family: arial;
+		border: 3px rgb(55,55,55) solid;
+		height:60px;
+		width:60px;
+		opacity: 0.5;
+	}
+	.responsive-image {  
+		width: auto;  
+		height: 100%; 
+	} 	
 	.closebutton {
 		position:absolute;position:fixed;top:0px;right:0px;font-size:36px;
 	}
@@ -18,7 +44,7 @@
 <?php
 	if (isset($_REQUEST['image'])) {
 		$image = str_replace('file://', '', $_REQUEST['image']);
-		echo "<img src='$image' id='responsive-image'>";
+		echo "<img src='$image' class='responsive-image'>";
 	}
 ?>
 </center>
