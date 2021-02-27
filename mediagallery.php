@@ -16,6 +16,7 @@
 	$extpattern = '/.*[.][a-zA-Z0-9]+/s';
 	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+/s';
 	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+/s';
+	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+/s';
 	$codedb = '';
 	$filelist = array();
 
@@ -180,8 +181,17 @@
 
 		return $foldericon;
 	}
-	function videoicon($link) {
+	function videoicon($link, $vidpattern2) {
 		$videoicon = "<span class='videoicon'>$link</span>";
+		$link_noext = preg_replace($vidpattern2, '$1', $link);
+
+		$icondir = $_SESSION['basedir']."/icon/videos/";
+		$iconpath = $icondir.$link_noext."_thumb.jpg";
+		if (file_exists($iconpath)) {			
+			$icon2 = str_replace('file://', '', "$iconpath");			
+			$icon3 = str_replace('/var/www/html', '', "$icon2");
+			$videoicon = "<img src='$icon3' class='foldericon' />";
+		}
 
 		return $videoicon;
 	}
@@ -220,7 +230,7 @@
 	foreach ($filelist as $entry) {
 		if (preg_match($vidpattern, $entry)) {
         	$basedir2 = str_replace('/var/www/html', '', $basedir);
-        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $imgpattern)."</a>";
+        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $vidpattern2)."</a>";
 		}
 	}
 ?>
