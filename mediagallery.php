@@ -42,6 +42,7 @@
 		position:absolute;
 		left:45%;
 		z-index: 10;
+		position: fixed;
 	}
 	.navicon {
 		width:50px;
