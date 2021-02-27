@@ -57,14 +57,17 @@
 		height: 250px;
 		background-color: darkgrey;
 		word-wrap: break-word;
+		font-size: 26px;
+		line-height: 250px;
 	}
 	.videoicon {
 		position:relative;
 		float:left;
-		width: 100px;
-		height: 200px;
+		width: auto;  
+		height: 246px;
 		background-color: darkgrey;
 		word-wrap: break-word;
+		border:2px solid lightblue;
 	}
 </style>
 <script>
@@ -190,7 +193,7 @@
 		if (file_exists($iconpath)) {			
 			$icon2 = str_replace('file://', '', "$iconpath");			
 			$icon3 = str_replace('/var/www/html', '', "$icon2");
-			$videoicon = "<img src='$icon3' class='foldericon' />";
+			$videoicon = "<img src='$icon3' class='videoicon' />";
 		}
 
 		return $videoicon;
