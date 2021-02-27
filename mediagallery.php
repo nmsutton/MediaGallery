@@ -82,9 +82,9 @@
 	if ($updir == preg_replace('/(.*)\/.*$/', '$1', $origdir)) {
 		$updir = $origdir;
 	}
-	echo "<a href='javascript:subform(\"$updir\")'>up</a><br>";
-	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'>back</a><br>";	
-	echo "<a href='javascript:subform(\"$origdir\")'>home</a><br>";
+	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' style='position:absolute;top:0px;left:45%;width:50px;height:50px;' /></a><br>";	
+	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' style='position:absolute;top:0px;left:50%;width:50px;height:50px;' /></a><br>";
+	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' style='position:absolute;top:0px;left:55%;width:50px;height:50px;' /></a><br>";
 	// sort	
 	if ($handle = opendir($basedir)) {
 		while (false !== ($entry = readdir($handle))) {
