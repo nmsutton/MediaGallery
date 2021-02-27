@@ -28,6 +28,24 @@
 ?>	
 <style>
 	body {background-color: black;}
+
+	/* icon settings */
+	.icon {
+		position:relative;
+		float:left;
+		top:0px;
+		width: auto;  
+		height: 200px;
+	}
+	.navbar {
+		position:absolute;
+		top:0px;
+		left:45%;
+	}
+	.navicon {
+		width:50px;
+		height:50px;		
+	}
 </style>
 <script>
 	function subform(link) {
@@ -82,9 +100,11 @@
 	if ($updir == preg_replace('/(.*)\/.*$/', '$1', $origdir)) {
 		$updir = $origdir;
 	}
-	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' style='position:absolute;top:0px;left:45%;width:50px;height:50px;' /></a><br>";	
-	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' style='position:absolute;top:0px;left:50%;width:50px;height:50px;' /></a><br>";
-	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' style='position:absolute;top:0px;left:55%;width:50px;height:50px;' /></a><br>";
+	echo "<span class='navbar'>";
+	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon' /></a>";	
+	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='navicon' /></a>";
+	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon' /></a>";
+	echo "</span>";
 	// sort	
 	if ($handle = opendir($basedir)) {
 		while (false !== ($entry = readdir($handle))) {
@@ -116,7 +136,8 @@
 	foreach ($filelist as $entry) {
 		if (preg_match($imgpattern, $entry)) {
 			$basedir2 = str_replace('/var/www/html', '', $basedir);
-            echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'>$entry</a><br>";
+			$image = str_replace('file://', '', "$basedir2/$entry");
+            echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'><img src='$image' class='icon' /></a><br>";
 		}
 	}
 ?>
