@@ -34,26 +34,26 @@
 		position:relative;
 		float:left;
 		width: auto;  
-		height: 200px;
+		height: 250px;
 		/* reduce icon quality for fast processing */
 		image-resolution: 10dpi; 
 	}
 	.navbar {
 		position:absolute;
-		left:45%;
+		left:42%;
 		z-index: 10;
 		position: fixed;
 	}
 	.navicon {
-		width:50px;
-		height:50px;
+		width:70px;
+		height:70px;
 		opacity: 0.5;		
 	}
 	.foldericon {
 		position:relative;
 		float:left;
 		width: auto;  
-		height: 200px;
+		height: 250px;
 		background-color: darkgrey;
 		word-wrap: break-word;
 	}
@@ -136,9 +136,14 @@
 	}
 	sort($filelist);
 	function foldericon($link, $imgpattern) {
+		/*
+			Try to find icon first in icon directory. Then with
+			any image in the folder.
+		*/
 		$foldericon = "<span class='foldericon'>$link</span>";
 
 		$icondir = $_SESSION['basedir']."/"."$link/icon/";
+		$picdir = $_SESSION['basedir']."/"."$link/";
 		//echo $icondir."<br>";
 		$iconlist = array();
 		if ($handle = opendir($icondir)) {
@@ -154,6 +159,23 @@
 			$icon2 = str_replace('file://', '', "$icon");			
 			$icon3 = str_replace('/var/www/html', '', "$icon2");
 			$foldericon = "<img src='$icon3' class='foldericon' />";
+		}
+		else {
+			$piclist = array();
+			if ($handle = opendir($picdir)) {
+				while (false !== ($entry = readdir($handle))) {
+					if ($entry != "." && $entry != ".." && preg_match($imgpattern, $entry)) {
+						array_push($piclist, $entry);
+					}
+				}
+			    closedir($handle);
+			}
+			if ($piclist[0] != "") {
+				$icon = $picdir."/".$piclist[0];
+				$icon2 = str_replace('file://', '', "$icon");			
+				$icon3 = str_replace('/var/www/html', '', "$icon2");
+				$foldericon = "<img src='$icon3' class='foldericon' />";
+			}
 		}
 
 		return $foldericon;
