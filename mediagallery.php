@@ -33,18 +33,36 @@
 	.icon {
 		position:relative;
 		float:left;
-		top:0px;
 		width: auto;  
 		height: 200px;
+		/* reduce icon quality for fast processing */
+		image-resolution: 10dpi; 
 	}
 	.navbar {
 		position:absolute;
-		top:0px;
 		left:45%;
+		z-index: 10;
 	}
 	.navicon {
 		width:50px;
-		height:50px;		
+		height:50px;
+		opacity: 0.5;		
+	}
+	.foldericon {
+		position:relative;
+		float:left;
+		width: 100px;
+		height: 200px;
+		background-color: darkgrey;
+		word-wrap: break-word;
+	}
+	.videoicon {
+		position:relative;
+		float:left;
+		width: 100px;
+		height: 200px;
+		background-color: darkgrey;
+		word-wrap: break-word;
 	}
 </style>
 <script>
@@ -100,6 +118,7 @@
 	if ($updir == preg_replace('/(.*)\/.*$/', '$1', $origdir)) {
 		$updir = $origdir;
 	}
+	// navigation bar
 	echo "<span class='navbar'>";
 	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon' /></a>";	
 	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='navicon' /></a>";
@@ -115,6 +134,16 @@
 	    closedir($handle);
 	}
 	sort($filelist);
+	function foldericon($link) {
+		$foldericon = "<span class='foldericon'>$link</span>";
+
+		return $foldericon;
+	}
+	function videoicon($link) {
+		$videoicon = "<span class='videoicon'>$link</span>";
+
+		return $videoicon;
+	}
 ?>
 <!-- directories -->
 <form name='setdir' action='mediagallery.php' method = "POST">
@@ -123,13 +152,13 @@
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
-			echo "<a href='javascript:subform(\"$basedir/$entry\")'>$entry</a><br>";
+			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry")."</a>";
 		}
 	}
 ?>
 </form>
 <!-- images -->
-<form name='setimg' action='imageviewer.php' method = "POST">
+<form name='setimg' action='imageviewer.php' method = "POST" target="_blank">
 <input type="hidden" name="image" id="image">
 <input type="hidden" name="basedirimg" id="basedirimg">
 <?php
@@ -137,20 +166,20 @@
 		if (preg_match($imgpattern, $entry)) {
 			$basedir2 = str_replace('/var/www/html', '', $basedir);
 			$image = str_replace('file://', '', "$basedir2/$entry");
-            echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'><img src='$image' class='icon' /></a><br>";
+            echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'><img src='$image' class='icon' /></a>";
 		}
 	}
 ?>
 </form>
 <!-- videos -->
-<form name='setvid' action='videoviewer.php' method = "POST">
+<form name='setvid' action='videoviewer.php' method = "POST" target="_blank">
 <input type="hidden" name="video" id="video">
 <input type="hidden" name="basedirvid" id="basedirvid">
 <?php
 	foreach ($filelist as $entry) {
 		if (preg_match($vidpattern, $entry)) {
         	$basedir2 = str_replace('/var/www/html', '', $basedir);
-        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>$entry</a><br>";
+        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry")."</a>";
 		}
 	}
 ?>
