@@ -44,13 +44,20 @@
 <body>
 <center>
 <?php
+	function findext($link) {
+		$vidext = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+/s';
+		$linkext = preg_replace($vidext, '$1', $link);
+		if ($linkext == "mpg" || $linkext == "mpeg") {
+			echo " type='video/mpeg'";
+		}
+	}
 	if (isset($_REQUEST['video'])) {
 		$video = str_replace('file://', '', $_REQUEST['video']);
-		echo "
-		<video controls autoplay loop width='640' height='360' id='video'>
+		echo "<video controls autoplay loop width='640' height='360' id='video'"; 
+		findext($video);
+		echo ">
 			<source src='$video'>
-		</video>
-		";
+		</video>";
 	}
 ?>
 </center>
@@ -60,5 +67,6 @@
 </form>
 <input type="button" value=" x " class="closebutton" onclick="javascript:closewindow()" />
 <input type="button" value=" o " class="fullscreenbutton" onclick="javascript:fullscreenwindow()" />
+<script>fullscreenwindow();</script>
 </body>
 </html>

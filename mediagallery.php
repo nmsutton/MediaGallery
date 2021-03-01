@@ -13,10 +13,10 @@
 
 <?php 
 	$origdir = 'file:///var/www/html/general/medialink/medialink2';  
-	$extpattern = '/.*[.][a-zA-Z0-9]+/s';
-	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+/s';
-	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+/s';
-	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+/s';
+	$extpattern = '/.*[.][a-zA-Z0-9]+$/s';
+	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+$/s';
+	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+$/s';
+	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+$/s';
 	$codedb = '';
 	$filelist = array();
 
@@ -31,24 +31,27 @@
 	body {
 		background-color: black;
 		color: #3a4472;
-		font-size: 48px;
+		font-size: 36px;
 		font-family: arial;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
 	}
 	textarea {
 		background-color: black;
 		color: #3a4472;
-		font-size: 48px;
+		font-size: 36px;
 		font-family: arial;
 		overflow:hidden;
 		border: 3px rgb(55,55,55) solid;
+		word-wrap: break-word;
 	}
 	input[type='button'] {
 		background-color: rgb(25,25,25);
 		color: #3a4472;
-		font-size: 48px;
+		font-size: 36px;
 		font-family: arial;
 		border: 3px rgb(55,55,55) solid;
-		width:650px;
+		word-wrap: break-word;
 	}
 	/* icon settings */
 	.icon {
@@ -58,6 +61,9 @@
 		height: 250px;
 		/* reduce icon quality for fast processing */
 		image-resolution: 10dpi; 
+		word-wrap: break-word;
+		/*max-width: 400px;*/
+		overflow-wrap: break-word;
 	}
 	.navbar {
 		position:absolute;
@@ -77,6 +83,7 @@
 		height: 246px;
 		background-color: black;
 		word-wrap: break-word;
+		overflow-wrap: break-word;
 		font-size: 26px;
 		line-height: 250px;
 		border:2px solid darkgrey;
@@ -88,7 +95,9 @@
 		height: 246px;
 		background-color: black;
 		word-wrap: break-word;
+		overflow-wrap: break-word;
 		border:2px solid lightblue;
+		/*max-width: 400px;*/
 	}
 </style>
 <script>
