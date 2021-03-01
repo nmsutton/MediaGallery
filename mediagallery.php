@@ -12,11 +12,12 @@
 ?>
 
 <?php 
-	$origdir = 'file:///var/www/html/general/medialink/medialink2';  
+	$origdir = 'file:///var/www/html/general/medialink/medialink';  
+	$specialicons = '/var/www/html/general/medialink/special_icons.php';
 	$extpattern = '/.*[.][a-zA-Z0-9]+$/s';
 	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+$/s';
-	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+$/s';
-	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv)+$/s';
+	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
+	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
 	$codedb = '';
 	$filelist = array();
 
@@ -169,15 +170,16 @@
 	    closedir($handle);
 	}
 	sort($filelist);
-	function foldericon($link, $imgpattern) {
+	function foldericon($link, $imgpattern, $specialicons) {
 		/*
 			Try to find icon first in icon directory. Then with
 			any image in the folder.
 		*/
 		$foldericon = "<span class='foldericon'>$link</span>";
-
 		$icondir = $_SESSION['basedir']."/"."$link/icon/";
 		$picdir = $_SESSION['basedir']."/"."$link/";
+		$sipresent = false;
+		if (file_exists($specialicons)) {include ($specialicons);$sipresent=true;}
 		//echo $icondir."<br>";
 		$iconlist = array();
 		if ($handle = opendir($icondir)) {
@@ -192,6 +194,11 @@
 			$icon = $icondir."/".$iconlist[0];
 			$icon2 = str_replace('file://', '', "$icon");			
 			$icon3 = str_replace('/var/www/html', '', "$icon2");
+			$foldericon = "<img src='$icon3' class='foldericon' />";
+		}
+		else if ($sipresent==true && $siconsdict[$link] != "") {
+			$icon3 = $siconsdict[$link];
+			
 			$foldericon = "<img src='$icon3' class='foldericon' />";
 		}
 		else {
@@ -236,7 +243,7 @@
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
-			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry", $imgpattern)."</a>";
+			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry", $imgpattern, $specialicons)."</a>";
 		}
 	}
 ?>
