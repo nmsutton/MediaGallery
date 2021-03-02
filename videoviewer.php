@@ -30,6 +30,9 @@
 	}	
 	.fullscreenbutton {
 		position:absolute;position:fixed;top:70px;right:0px;font-size:36px;
+	}
+	.mutebutton {
+		position:absolute;position:fixed;top:140px;right:0px;font-size:36px;
 	}	
 </style>
 <script>
@@ -38,6 +41,9 @@
 	}
 	function fullscreenwindow() {
 		document.getElementById("video").requestFullscreen();
+	}
+	function muteaudio() {
+		document.getElementById("video").prop('muted', true);
 	}
 </script>
 </head>
@@ -53,7 +59,7 @@
 	}
 	if (isset($_REQUEST['video'])) {
 		$video = str_replace('file://', '', $_REQUEST['video']);
-		echo "<video controls autoplay loop width='640' height='360' id='video'"; 
+		echo "<video controls autoplay loop muted controlsList='nodownload' width='640' height='360' id='video'"; 
 		findext($video);
 		echo ">
 			<source src='$video'>
@@ -67,6 +73,10 @@
 </form>
 <input type="button" value=" x " class="closebutton" onclick="javascript:closewindow()" />
 <input type="button" value=" o " class="fullscreenbutton" onclick="javascript:fullscreenwindow()" />
-<script>fullscreenwindow();</script>
+<input type="button" value=" m " class="mutebutton" onclick="javascript:muteaudio()" />
+<script>
+	muteaudio();
+	fullscreenwindow();
+</script>
 </body>
 </html>
