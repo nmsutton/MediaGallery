@@ -100,6 +100,12 @@
 		border:2px solid lightblue;
 		/*max-width: 400px;*/
 	}
+	.closebutton {
+		position:absolute;position:fixed;top:0px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+	}	
+	.newtabbutton {
+		position:absolute;position:fixed;top:50px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+	}	
 </style>
 <script>
 	function subform(link) {
@@ -116,6 +122,19 @@
 		document.getElementById("video").value = link;
 		document.getElementById("basedirvid").value = <?php echo "'".$_SESSION['basedir']."'" ?>;
 		document.forms["setvid"].submit();
+	}
+	function closewindow() {
+		window.close();
+	}	
+	function newtab() {
+		if (document.getElementById("setdir").target == "_self") {
+			document.getElementById("setdir").target = "_blank";	
+			document.getElementById("newtabbutton").value = "[x]";
+		}		
+		else {
+			document.getElementById("setdir").target = "_self";
+			document.getElementById("newtabbutton").value = "[_]";
+		}
 	}
 </script>
 </head>
@@ -236,8 +255,10 @@
 		return $videoicon;
 	}
 ?>
+<input type="button" value=" x " class="closebutton" onclick="javascript:closewindow()" />
+<input type="button" value="[_]" class="newtabbutton" id="newtabbutton" onclick="javascript:newtab()" />
 <!-- directories -->
-<form name='setdir' action='mediagallery.php' method = "POST">
+<form name='setdir' id='setdir' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
 <input type="hidden" name="prevdir" id="prevdir">
 <?php
