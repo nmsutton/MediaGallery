@@ -130,10 +130,12 @@
 		if (document.getElementById("setdir").target == "_self") {
 			document.getElementById("setdir").target = "_blank";	
 			document.getElementById("newtabbutton").value = "[x]";
+			document.getElementById("newtab").value = "true";
 		}		
 		else {
 			document.getElementById("setdir").target = "_self";
 			document.getElementById("newtabbutton").value = "[_]";
+			document.getElementById("newtab").value = "false";
 		}
 	}
 </script>
@@ -261,6 +263,29 @@
 <form name='setdir' id='setdir' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
 <input type="hidden" name="prevdir" id="prevdir">
+<input type="hidden" name="newtab" id="newtab" value=
+<?php
+if (isset($_REQUEST['newtab'])) {echo "\"".$_REQUEST['newtab']."\"";}
+else{echo "\"false\"";}
+?> 
+>
+<?php 
+	if (isset($_REQUEST['newtab'])) {
+		$ntval = $_REQUEST['newtab'];
+		if ($ntval == "true") {
+			echo "<script>
+			document.getElementById('setdir').target = '_blank';	
+			document.getElementById('newtabbutton').value = '[x]';
+			</script>";
+		}
+		else if ($ntval == "false") {
+			echo "<script>
+			document.getElementById('setdir').target = '_self';	
+			document.getElementById('newtabbutton').value = '[_]';
+			</script>";
+		}
+	}
+?>
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
