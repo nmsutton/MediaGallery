@@ -44,3 +44,11 @@ Navigate to folder where file should be located.
 `htpasswd -c .htpasswd [username]`
 
 This will create a file named .htpasswd that stores the password.
+
+# setting up database
+
+This creates a password for using the mediagallery site stored in mysql for security.
+
+run the mysql script db.sql to create the mediagallery database in mysql.
+Then edit create_pass.sql to add the password you want.
+Run create_pass.sql to enter the password into the database.
