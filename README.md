@@ -23,7 +23,7 @@ On your local system rename dbaccess_example.php to dbaccess.php and enter your 
 
 Individual folders can be password protected using the method described [here](https://electrictoolbox.com/apache-password-protect-directory/). In breif:
 
-apache2.conf
+apache2.conf (which may be located in /etc/apache2/apache2.conf)
 
 `<Directory [target_folder]>`
 
@@ -45,7 +45,7 @@ Navigate to folder where file should be located.
 
 This will create a file named .htpasswd that stores the password.
 
-# setting up database
+# Setting up database
 
 This creates a password for using the mediagallery site stored in mysql for security.
 
