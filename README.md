@@ -45,6 +45,8 @@ Navigate to folder where file should be located.
 
 This will create a file named .htpasswd that stores the password.
 
+Then run `sudo service apache2 restart` to apply the changes.
+
 # Setting up database
 
 This creates a password for using the mediagallery site stored in mysql for security.
