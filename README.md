@@ -18,6 +18,8 @@ For example:
 
 If the \<target_folder\> is outside of the webserver directory, a softlink should be made to it in the webserver directory. This site can then set $origdir = '\<target_folder\>' to access the external folders.
 
+In practice, it has been found that some parent directories to the \<target_folder\> need to be made executable and have read and write access given to them for the web server to allow permission to access the \<target_folder\> through a web browser. This may not be needed on some systems.
+
 # Password security
 On your local system rename dbaccess_example.php to dbaccess.php and enter your username and password for database access used to access the mediagallery database. Note: dbaccess.php is in the gitignore file to avoid password credentials being uploaded to the source control website.
 
