@@ -168,6 +168,12 @@
 		{
 		    labels[i].classList.toggle('hiddenelement');
 		}
+		if (document.getElementById("labelvisibility").value == "true") {
+			document.getElementById("labelvisibility").value = "false";
+		}
+		else {
+			document.getElementById("labelvisibility").value = "true";
+		}
 	}
 </script>
 </head>
@@ -275,7 +281,16 @@
 			}
 		}
 		if ($updateicon) {
-			$foldericon = "<span class='foldercontainer'><img src='$icon3' class='foldericon' /><span class='labelarea hiddenelement'><br>".substr($link, 0, 10)."</span></span>";
+			$foldericon = "<span class='foldercontainer'><img src='$icon3' class='foldericon' /><span class='labelarea";
+			if (isset($_REQUEST['labelvisibility'])) {
+				if ($_REQUEST['labelvisibility']=='false') {
+					$foldericon = $foldericon." hiddenelement";
+				}
+			}
+			else {
+				$foldericon = $foldericon." hiddenelement";
+			}
+			$foldericon = $foldericon."'><br>".substr($link, 0, 10)."</span></span>";
 		}
 
 		return $foldericon;
@@ -305,6 +320,12 @@
 <input type="hidden" name="newtab" id="newtab" value=
 <?php
 if (isset($_REQUEST['newtab'])) {echo "\"".$_REQUEST['newtab']."\"";}
+else{echo "\"false\"";}
+?> 
+>
+<input type="hidden" name="labelvisibility" id="labelvisibility" value=
+<?php
+if (isset($_REQUEST['labelvisibility'])) {echo "\"".$_REQUEST['labelvisibility']."\"";}
 else{echo "\"false\"";}
 ?> 
 >
