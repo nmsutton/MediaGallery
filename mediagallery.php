@@ -126,10 +126,12 @@
 		bottom:30px;
 		z-index:20;
 		background-color:rgba(0, 0, 0, 0.5);
+		color:#3391ff;
 	}
 	.hiddenelement {
 		display: none;
 	}
+	a { color: #3391ff; }
 </style>
 <script>
 	function subform(link) {
