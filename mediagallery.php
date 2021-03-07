@@ -77,10 +77,22 @@
 		height:70px;
 		opacity: 0.5;		
 	}
+	.foldercontainer {
+		position:relative;
+		float:left;
+		width: auto;  	
+		height: 246px;
+		background-color: black;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		font-size: 26px;
+		text-align: center;
+	}
 	.foldericon {
 		position:relative;
 		float:left;
 		width: auto;  
+		min-width: 120px;
 		height: 246px;
 		background-color: black;
 		word-wrap: break-word;
@@ -106,6 +118,18 @@
 	.newtabbutton {
 		position:absolute;position:fixed;top:50px;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}	
+	.labelsbutton {
+		position:absolute;position:fixed;top:100px;right:0px;font-size:36px;opacity:0.75;z-index:10;min-width:55px;
+	}
+	.labelarea {
+		position:relative;
+		bottom:30px;
+		z-index:20;
+		background-color:rgba(0, 0, 0, 0.5);
+	}
+	.hiddenelement {
+		display: none;
+	}
 </style>
 <script>
 	function subform(link) {
@@ -136,6 +160,13 @@
 			document.getElementById("setdir").target = "_self";
 			document.getElementById("newtabbutton").value = "[_]";
 			document.getElementById("newtab").value = "false";
+		}
+	}
+	function togglelabels() {
+		var labels = document.getElementsByClassName("labelarea");
+		for(var i = 0; i < labels.length; i++)
+		{
+		    labels[i].classList.toggle('hiddenelement');
 		}
 	}
 </script>
@@ -200,6 +231,7 @@
 		$icondir = $_SESSION['basedir']."/"."$link/icon/";
 		$picdir = $_SESSION['basedir']."/"."$link/";
 		$sipresent = false;
+		$updateicon = false;
 		if (file_exists($specialicons)) {include ($specialicons);$sipresent=true;}
 		//echo $icondir."<br>";
 		$iconlist = array();
@@ -212,17 +244,20 @@
 		    closedir($handle);
 		}
 		if ($iconlist[0] != "") {
+			// icon folder found
 			$icon = $icondir."/".$iconlist[0];
 			$icon2 = str_replace('file://', '', "$icon");			
 			$icon3 = str_replace('/var/www/html', '', "$icon2");
-			$foldericon = "<img src='$icon3' class='foldericon' />";
+			$updateicon = true;
 		}
 		else if ($sipresent==true && $siconsdict[$link] != "") {
+			// special icons
 			$icon3 = $siconsdict[$link];
 			
-			$foldericon = "<img src='$icon3' class='foldericon' />";
+			$updateicon = true;
 		}
 		else {
+			// any image in folder for icon
 			$piclist = array();
 			if ($handle = opendir($picdir)) {
 				while (false !== ($entry = readdir($handle))) {
@@ -236,8 +271,11 @@
 				$icon = $picdir."/".$piclist[0];
 				$icon2 = str_replace('file://', '', "$icon");			
 				$icon3 = str_replace('/var/www/html', '', "$icon2");
-				$foldericon = "<img src='$icon3' class='foldericon' />";
+				$updateicon = true;
 			}
+		}
+		if ($updateicon) {
+			$foldericon = "<span class='foldercontainer'><img src='$icon3' class='foldericon' /><span class='labelarea hiddenelement'><br>".substr($link, 0, 10)."</span></span>";
 		}
 
 		return $foldericon;
@@ -259,6 +297,7 @@
 ?>
 <input type="button" value=" x " class="closebutton" onclick="javascript:closewindow()" />
 <input type="button" value="[_]" class="newtabbutton" id="newtabbutton" onclick="javascript:newtab()" />
+<input type="button" value=" t " class="labelsbutton" id="labelsbutton" onclick="javascript:togglelabels()" />
 <!-- directories -->
 <form name='setdir' id='setdir' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
