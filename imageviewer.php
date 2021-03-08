@@ -28,8 +28,16 @@
 	.responsive-image {  
 		width: auto;  
 		height: 100%; 
-	} 	
+	}
 	.responsive-image2 {  
+		width: 63%;  
+		height: auto; 
+	}
+	.responsive-image2b {  
+		width: 75%;  
+		height: auto; 
+	}  	
+	.responsive-image2c {  
 		width: 100%;  
 		height: auto; 
 	} 
@@ -70,6 +78,14 @@
 		}
 		else if ( document.getElementById("image").classList.contains('responsive-image2') ) {
 			document.getElementById("image").classList.remove('responsive-image2');
+			document.getElementById("image").classList.add('responsive-image2b');
+		}
+		else if ( document.getElementById("image").classList.contains('responsive-image2b') ) {
+			document.getElementById("image").classList.remove('responsive-image2b');
+			document.getElementById("image").classList.add('responsive-image2c');
+		}
+		else if ( document.getElementById("image").classList.contains('responsive-image2c') ) {
+			document.getElementById("image").classList.remove('responsive-image2c');
 			document.getElementById("image").classList.add('responsive-image3');
 		}
 		else if ( document.getElementById("image").classList.contains('responsive-image3') ) {
@@ -100,6 +116,14 @@
 		}
 		else if ( document.getElementById("image").classList.contains('responsive-image3') ) {
 			document.getElementById("image").classList.remove('responsive-image3');
+			document.getElementById("image").classList.add('responsive-image2c');
+		}
+		else if ( document.getElementById("image").classList.contains('responsive-image2c') ) {
+			document.getElementById("image").classList.remove('responsive-image2c');
+			document.getElementById("image").classList.add('responsive-imageb');
+		}
+		else if ( document.getElementById("image").classList.contains('responsive-image2b') ) {
+			document.getElementById("image").classList.remove('responsive-image2b');
 			document.getElementById("image").classList.add('responsive-image2');
 		}		
 		else if ( document.getElementById("image").classList.contains('responsive-image2') ) {
