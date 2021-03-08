@@ -53,6 +53,8 @@
 		font-family: arial;
 		border: 3px rgb(55,55,55) solid;
 		word-wrap: break-word;
+		width:10%;
+		height:15%;
 	}
 	/* icon settings */
 	.icon {
@@ -73,8 +75,10 @@
 		position: fixed;
 	}
 	.navicon {
-		width:70px;
-		height:70px;
+		/*width:70px;
+		height:70px;*/
+		width:10%;
+		height:15%;
 		opacity: 0.5;		
 	}
 	.foldercontainer {
@@ -112,19 +116,31 @@
 		border:2px solid lightblue;
 		/*max-width: 400px;*/
 	}
-	.closebutton {
+	.menubutton {
 		position:absolute;position:fixed;top:0px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+	}
+	.closebutton {
+		position:absolute;position:fixed;top:100px;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}	
 	.newtabbutton {
-		position:absolute;position:fixed;top:50px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:200px;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}	
 	.labelsbutton {
-		position:absolute;position:fixed;top:100px;right:0px;font-size:36px;opacity:0.75;z-index:10;min-width:55px;
+		position:absolute;position:fixed;top:300px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+	}
+	.homebutton {
+		position:absolute;position:fixed;top:400px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+	}
+	.upbutton {
+		position:absolute;position:fixed;top:500px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+	}	
+	.backbutton {
+		position:absolute;position:fixed;top:600px;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}
 	.labelarea {
 		position:relative;
 		bottom:30px;
-		z-index:20;
+		z-index:5;
 		background-color:rgba(0, 0, 0, 0.5);
 		color:#3391ff;
 	}
@@ -177,6 +193,13 @@
 			document.getElementById("labelvisibility").value = "true";
 		}
 	}
+	function togglemenu() {
+		var labels = document.getElementsByClassName("menuitem");
+		for(var i = 0; i < labels.length; i++)
+		{
+		    labels[i].classList.toggle('hiddenelement');
+		}
+	}
 </script>
 </head>
 <body>
@@ -215,11 +238,9 @@
 		$updir = $origdir;
 	}
 	// navigation bar
-	echo "<span class='navbar'>";
-	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon' /></a>";	
-	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='navicon' /></a>";
-	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon' /></a>";
-	echo "</span>";
+	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon homebutton menuitem' /></a>";	
+	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='navicon upbutton menuitem' /></a>";
+	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon backbutton menuitem' /></a>";
 	// sort	
 	if ($handle = opendir($basedir)) {
 		while (false !== ($entry = readdir($handle))) {
@@ -312,9 +333,10 @@
 		return $videoicon;
 	}
 ?>
-<input type="button" value=" x " class="closebutton" onclick="javascript:closewindow()" />
-<input type="button" value="[_]" class="newtabbutton" id="newtabbutton" onclick="javascript:newtab()" />
-<input type="button" value=" t " class="labelsbutton" id="labelsbutton" onclick="javascript:togglelabels()" />
+<input type="button" value="|&#8801;|" class="menubutton" id="menubutton" onclick="javascript:togglemenu()" />
+<input type="button" value=" x " class="closebutton menuitem" onclick="javascript:closewindow()" />
+<input type="button" value="[_]" class="newtabbutton menuitem" id="newtabbutton" onclick="javascript:newtab()" />
+<input type="button" value=" t " class="labelsbutton menuitem" id="labelsbutton" onclick="javascript:togglelabels()" />
 <!-- directories -->
 <form name='setdir' id='setdir' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
