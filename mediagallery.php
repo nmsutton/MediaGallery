@@ -79,7 +79,17 @@
 		height:70px;*/
 		width:10%;
 		height:15%;
+		opacity: 0.75;		
+	}
+	.upbuttoncenter {
+		position:absolute;
+		left:47%;
+		top:0px;
+		width:7%;
+		height:15%;
 		opacity: 0.5;		
+		z-index: 10;
+		position: fixed;
 	}
 	.foldercontainer {
 		position:relative;
@@ -128,15 +138,15 @@
 	.labelsbutton {
 		position:absolute;position:fixed;top:300px;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}
-	.homebutton {
+	.backbutton {
 		position:absolute;position:fixed;top:400px;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}
-	.upbutton {
+	.homebutton {
 		position:absolute;position:fixed;top:500px;right:0px;font-size:36px;opacity:0.75;z-index:10;
-	}	
-	.backbutton {
-		position:absolute;position:fixed;top:600px;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}
+	.statebutton {
+		position:absolute;position:fixed;top:600px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+	}	
 	.labelarea {
 		position:relative;
 		bottom:30px;
@@ -179,6 +189,7 @@
 			document.getElementById("newtabbutton").value = "[_]";
 			document.getElementById("newtab").value = "false";
 		}
+		togglemenu();
 	}
 	function togglelabels() {
 		var labels = document.getElementsByClassName("labelarea");
@@ -192,12 +203,21 @@
 		else {
 			document.getElementById("labelvisibility").value = "true";
 		}
+		togglemenu();
 	}
 	function togglemenu() {
 		var labels = document.getElementsByClassName("menuitem");
 		for(var i = 0; i < labels.length; i++)
 		{
 		    labels[i].classList.toggle('hiddenelement');
+		}		
+	}
+	function togglestate() {		
+		if (document.getElementById("menustate").value == "true") {
+			document.getElementById("menustate").value = "false";
+		}
+		else {
+			document.getElementById("menustate").value = "true";
 		}
 	}
 </script>
@@ -238,9 +258,10 @@
 		$updir = $origdir;
 	}
 	// navigation bar
-	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon homebutton menuitem' /></a>";	
-	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='navicon upbutton menuitem' /></a>";
-	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon backbutton menuitem' /></a>";
+	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon backbutton menuitem".menustate()."' /></a>";	
+	/*echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='navicon upbutton menuitem".menustate()."' /></a>";*/
+	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='upbuttoncenter' /></a>";
+	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon homebutton menuitem".menustate()."' /></a>";
 	// sort	
 	if ($handle = opendir($basedir)) {
 		while (false !== ($entry = readdir($handle))) {
@@ -251,6 +272,13 @@
 	    closedir($handle);
 	}
 	sort($filelist);
+	function menustate() {
+		$state = "";
+		if (isset($_REQUEST['menustate']) && $_REQUEST['menustate']=='true') {
+			$state = " hiddenelement";
+		}
+		return $state;
+	}
 	function foldericon($link, $imgpattern, $specialicons) {
 		/*
 			Try to find icon first in icon directory. Then with
@@ -334,9 +362,10 @@
 	}
 ?>
 <input type="button" value="|&#8801;|" class="menubutton" id="menubutton" onclick="javascript:togglemenu()" />
-<input type="button" value=" x " class="closebutton menuitem" onclick="javascript:closewindow()" />
-<input type="button" value="[_]" class="newtabbutton menuitem" id="newtabbutton" onclick="javascript:newtab()" />
-<input type="button" value=" t " class="labelsbutton menuitem" id="labelsbutton" onclick="javascript:togglelabels()" />
+<input type="button" value=" x " class="closebutton menuitem<?php menustate() ?>" onclick="javascript:closewindow()" />
+<input type="button" value="[_]" class="newtabbutton menuitem<?php menustate() ?>" id="newtabbutton" onclick="javascript:newtab()" />
+<input type="button" value=" t " class="labelsbutton menuitem<?php menustate() ?>" id="labelsbutton" onclick="javascript:togglelabels()" />
+<input type="button" value="[&#8801;]" class="statebutton menuitem<?php menustate() ?>" id="statebutton" onclick="javascript:togglestate()" />
 <!-- directories -->
 <form name='setdir' id='setdir' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
@@ -350,6 +379,12 @@ else{echo "\"false\"";}
 <input type="hidden" name="labelvisibility" id="labelvisibility" value=
 <?php
 if (isset($_REQUEST['labelvisibility'])) {echo "\"".$_REQUEST['labelvisibility']."\"";}
+else{echo "\"false\"";}
+?> 
+>
+<input type="hidden" name="menustate" id="menustate" value=
+<?php
+if (isset($_REQUEST['menustate'])) {echo "\"".$_REQUEST['menustate']."\"";}
 else{echo "\"false\"";}
 ?> 
 >
