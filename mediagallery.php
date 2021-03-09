@@ -274,7 +274,12 @@
 	sort($filelist);
 	function menustate() {
 		$state = "";
-		if (isset($_REQUEST['menustate']) && $_REQUEST['menustate']=='true') {
+		if (isset($_REQUEST['menustate'])) {
+			if ($_REQUEST['menustate']=='true') {
+				$state = " hiddenelement";
+			}
+		}
+		else {
 			$state = " hiddenelement";
 		}
 		return $state;
@@ -362,10 +367,10 @@
 	}
 ?>
 <input type="button" value="|&#8801;|" class="menubutton" id="menubutton" onclick="javascript:togglemenu()" />
-<input type="button" value=" x " class="closebutton menuitem<?php menustate() ?>" onclick="javascript:closewindow()" />
-<input type="button" value="[_]" class="newtabbutton menuitem<?php menustate() ?>" id="newtabbutton" onclick="javascript:newtab()" />
-<input type="button" value=" t " class="labelsbutton menuitem<?php menustate() ?>" id="labelsbutton" onclick="javascript:togglelabels()" />
-<input type="button" value="[&#8801;]" class="statebutton menuitem<?php menustate() ?>" id="statebutton" onclick="javascript:togglestate()" />
+<input type="button" value=" x " class=<?php echo "\"closebutton menuitem".menustate()."\""; ?> onclick="javascript:closewindow()" />
+<input type="button" value="[_]" class=<?php echo "\"newtabbutton menuitem".menustate()."\""; ?> id="newtabbutton" onclick="javascript:newtab()" />
+<input type="button" value=" t " class=<?php echo "\"labelsbutton menuitem".menustate()."\""; ?> id="labelsbutton" onclick="javascript:togglelabels()" />
+<input type="button" value="[&#8801;]" class=<?php echo "\"statebutton menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
 <!-- directories -->
 <form name='setdir' id='setdir' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
