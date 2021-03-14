@@ -54,12 +54,20 @@
 		border: 3px rgb(55,55,55) solid;
 		word-wrap: break-word;
 		width:10%;
-		height:15%;
+		height:8%;
+	}
+	input[type=submit] {
+		padding: 2px 4px;
+		background-color: rgb(25,25,25);
+		color: #3a4472;
+		font-size: 20px;
+		font-family: arial;
+		border: 3px rgb(55,55,55) solid;
 	}
 	/* icon settings */
 	.icon {
 		position:relative;
-		float:left;
+		/*display:inline-block;*/
 		width: auto;  
 		height: 250px;
 		/* reduce icon quality for fast processing */
@@ -78,7 +86,7 @@
 		/*width:70px;
 		height:70px;*/
 		width:10%;
-		height:15%;
+		height:8%;
 		opacity: 0.75;		
 	}
 	.upbuttoncenter {
@@ -86,14 +94,14 @@
 		left:47%;
 		top:0px;
 		width:7%;
-		height:15%;
+		height:10%;
 		opacity: 0.5;		
 		z-index: 10;
 		position: fixed;
 	}
 	.foldercontainer {
 		position:relative;
-		float:left;
+		display:inline-block;
 		width: auto;  	
 		height: 246px;
 		background-color: black;
@@ -102,22 +110,50 @@
 		font-size: 26px;
 		text-align: center;
 	}
+	.foldercontainernoicon {
+		position:relative;
+		display:inline-block;
+		width: auto;  	
+		height: 216px;
+		background-color: black;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		font-size: 26px;
+		text-align: center;
+	}
 	.foldericon {
 		position:relative;
-		float:left;
+		/*display:inline-block;*/
 		width: auto;  
-		min-width: 120px;
+		/*min-width: 120px;*/
 		height: 246px;
 		background-color: black;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 		font-size: 26px;
-		line-height: 250px;
+		/*line-height: 250px;*/
 		border:2px solid darkgrey;
+		text-align:center;
+	}
+	.foldericongeneric {
+		position:relative;
+		width: 160px;  
+		height: 216px;
+		background-color: black;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		font-size: 26px;
+		border:2px solid darkgrey;
+		text-align:center;
+	}
+	.foldertext {
+		/*width: auto !important; 
+		height: 228px !important;*/
+		/*padding: 9px;*/
 	}
 	.videoicon {
 		position:relative;
-		float:left;
+		display:inline-block;
 		width: auto;  
 		height: 246px;
 		background-color: black;
@@ -127,35 +163,49 @@
 		/*max-width: 400px;*/
 	}
 	.menubutton {
-		position:absolute;position:fixed;top:0px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:0%;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}
 	.closebutton {
-		position:absolute;position:fixed;top:100px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:10%;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}	
 	.newtabbutton {
-		position:absolute;position:fixed;top:200px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:20%;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}	
 	.labelsbutton {
-		position:absolute;position:fixed;top:300px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:30%;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}
 	.backbutton {
-		position:absolute;position:fixed;top:400px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:40%;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}
 	.homebutton {
-		position:absolute;position:fixed;top:500px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:50%;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}
 	.statebutton {
-		position:absolute;position:fixed;top:600px;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:60%;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}	
+	.makeiconbutton {
+		position:absolute;position:fixed;top:70%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+	}
 	.labelarea {
 		position:relative;
-		bottom:30px;
+		bottom:40px;
+		z-index:5;
+		background-color:rgba(0, 0, 0, 0.5);
+		color:#3391ff;
+	}
+	.labelareanonhidden {
+		position:relative;
+		bottom:7px;
 		z-index:5;
 		background-color:rgba(0, 0, 0, 0.5);
 		color:#3391ff;
 	}
 	.hiddenelement {
 		display: none;
+	}
+	.shiftup {
+		position:relative;
+		bottom:30px;
 	}
 	a { color: #3391ff; }
 </style>
@@ -204,6 +254,7 @@
 			document.getElementById("labelvisibility").value = "true";
 		}
 		togglemenu();
+		shiftlabels();
 	}
 	function togglemenu() {
 		var labels = document.getElementsByClassName("menuitem");
@@ -218,6 +269,36 @@
 		}
 		else {
 			document.getElementById("menustate").value = "true";
+		}
+	}
+	function makeicon() {
+
+	}
+	function makeicontoggle() {
+		if (document.getElementById("makeicon").value == "true") {
+			document.getElementById("makeicon").value = "false";
+			document.getElementById("makeiconbutton").value = " i ";
+		}
+		else {
+			document.getElementById("makeicon").value = "true";
+			document.getElementById("makeiconbutton").value = "[i]";
+		}
+	}
+	function shiftlabels() {
+		var genlabels = document.getElementsByClassName("genlabel");
+		if (document.getElementById("labelvisibility").value == "true") {
+			for(var i = 0; i < genlabels.length; i++)
+			{
+			    genlabels[i].classList.add('shiftup');
+			    //genlabels[i].classList.toggle('shiftup');
+			}
+		}
+		else {
+			for(var i = 0; i < genlabels.length; i++)
+			{
+			    genlabels[i].classList.remove('shiftup');
+			    //genlabels[i].classList.toggle('shiftup');
+			}
 		}
 	}
 </script>
@@ -238,7 +319,7 @@
 		echo "
 		<form name='setcode' action='mediagallery.php' method='POST'>
 		<center>
-		<br><br><input textarea name='code' id='code' style='font-size:28px'></input>
+		<br><br><input textarea name='code' id='code' style='font-size:28px;background-color:black;color: #3a4472;'></input>
 		<input type='submit' value='go' style='font-size:28px' />
 		</center>
 		</form>";		
@@ -289,7 +370,10 @@
 			Try to find icon first in icon directory. Then with
 			any image in the folder.
 		*/
-		$foldericon = "<span class='foldericon'>$link</span>";
+		//$foldericon = "<span class='foldericon foldertext'>$link</span>";
+		//$foldericon = "<span class='foldercontainer'><span class='foldericon'>$link</span></span>";
+		//$foldericon = "<span style='display:inline;border:3px rgb(55,55,55) solid;height:150px;'>$link</span>";
+		$foldericon = "<span class='foldercontainernoicon genlabel'><img src='media/folder.jpg' class='foldericongeneric' /><span class='labelareanonhidden'><br>".substr($link, 0, 10)."</span></span>";
 		$icondir = $_SESSION['basedir']."/"."$link/icon/";
 		$picdir = $_SESSION['basedir']."/"."$link/";
 		$sipresent = false;
@@ -347,6 +431,7 @@
 				$foldericon = $foldericon." hiddenelement";
 			}
 			$foldericon = $foldericon."'><br>".substr($link, 0, 10)."</span></span>";
+			//$foldericon = $foldericon."'></span></span>";
 		}
 
 		return $foldericon;
@@ -371,7 +456,7 @@
 <input type="button" value="[_]" class=<?php echo "\"newtabbutton menuitem".menustate()."\""; ?> id="newtabbutton" onclick="javascript:newtab()" />
 <input type="button" value=" t " class=<?php echo "\"labelsbutton menuitem".menustate()."\""; ?> id="labelsbutton" onclick="javascript:togglelabels()" />
 <input type="button" value="[&#8801;]" class=<?php echo "\"statebutton menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
-<!-- directories -->
+<input type="button" value=" i " class=<?php echo "\"makeiconbutton menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
 <form name='setdir' id='setdir' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
 <input type="hidden" name="prevdir" id="prevdir">
@@ -393,6 +478,7 @@ if (isset($_REQUEST['menustate'])) {echo "\"".$_REQUEST['menustate']."\"";}
 else{echo "\"false\"";}
 ?> 
 >
+<input type="hidden" name="makeicon" id="makeicon" value="false">
 <?php 
 	if (isset($_REQUEST['newtab'])) {
 		$ntval = $_REQUEST['newtab'];
@@ -410,6 +496,7 @@ else{echo "\"false\"";}
 		}
 	}
 ?>
+<!-- directories -->
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
@@ -442,6 +529,9 @@ else{echo "\"false\"";}
         	$basedir2 = str_replace('/var/www/html', '', $basedir);
         	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $vidpattern2)."</a>";
 		}
+	}
+	if (isset($_REQUEST['labelvisibility'])) {
+		echo "<script>shiftlabels();</script>";
 	}
 ?>
 </form>

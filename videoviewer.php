@@ -23,7 +23,7 @@
 		border: 3px rgb(55,55,55) solid;
 		/*height:60px;
 		width:60px;*/
-		height:30%;
+		height:15%;
 		width:15%;
 		opacity: 0.5;
 	}

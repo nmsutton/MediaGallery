@@ -23,7 +23,7 @@
 		border: 3px rgb(55,55,55) solid;
 		/*height:60px;
 		width:60px;*/
-		height:30%;
+		height:10%;
 		width:15%;
 		opacity: 0.5;
 	}
@@ -63,10 +63,10 @@
 		position:absolute;position:fixed;top:0px;right:0px;font-size:36px;
 	}
 	.zoomin {
-		position:absolute;position:fixed;top:220px;right:0px;font-size:36px;
+		position:absolute;position:fixed;top:160px;right:0px;font-size:36px;
 	}
 	.zoomout {
-		position:absolute;position:fixed;top:440px;right:0px;font-size:36px;
+		position:absolute;position:fixed;top:320px;right:0px;font-size:36px;
 	}	
 </style>
 <script>
