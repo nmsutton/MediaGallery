@@ -60,13 +60,13 @@
 		height: auto; 
 	}			
 	.closebutton {
-		position:absolute;position:fixed;top:0px;right:0px;font-size:36px;
+		position:absolute;position:fixed;top:0%;right:0px;font-size:36px;
 	}
 	.zoomin {
-		position:absolute;position:fixed;top:160px;right:0px;font-size:36px;
+		position:absolute;position:fixed;top:33%;right:0px;font-size:36px;
 	}
 	.zoomout {
-		position:absolute;position:fixed;top:320px;right:0px;font-size:36px;
+		position:absolute;position:fixed;top:66%;right:0px;font-size:36px;
 	}	
 </style>
 <script>

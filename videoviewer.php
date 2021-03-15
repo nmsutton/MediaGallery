@@ -31,10 +31,10 @@
 		position:absolute;position:fixed;top:0px;right:0px;font-size:36px;
 	}	
 	.fullscreenbutton {
-		position:absolute;position:fixed;top:220px;right:0px;font-size:36px;
+		position:absolute;position:fixed;top:33%;right:0px;font-size:36px;
 	}
 	.mutebutton {
-		position:absolute;position:fixed;top:440px;right:0px;font-size:36px;
+		position:absolute;position:fixed;top:66%;right:0px;font-size:36px;
 	}	
 </style>
 <script>

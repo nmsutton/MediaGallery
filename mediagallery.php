@@ -67,7 +67,7 @@
 	/* icon settings */
 	.icon {
 		position:relative;
-		/*display:inline-block;*/
+		display:inline-block;
 		width: auto;  
 		height: 250px;
 		/* reduce icon quality for fast processing */
@@ -91,10 +91,10 @@
 	}
 	.upbuttoncenter {
 		position:absolute;
-		left:47%;
+		left:46%;
 		top:0px;
-		width:7%;
-		height:10%;
+		width:9%;
+		height:18%;
 		opacity: 0.5;		
 		z-index: 10;
 		position: fixed;
@@ -123,7 +123,7 @@
 	}
 	.foldericon {
 		position:relative;
-		/*display:inline-block;*/
+		display:inline-block;
 		width: auto;  
 		/*min-width: 120px;*/
 		height: 246px;
@@ -138,12 +138,12 @@
 	.foldericongeneric {
 		position:relative;
 		width: 160px;  
-		height: 216px;
+		height: 220px;
 		background-color: black;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 		font-size: 26px;
-		border:2px solid darkgrey;
+		/*border:2px solid darkgrey;*/
 		text-align:center;
 	}
 	.foldertext {
@@ -186,6 +186,9 @@
 	.makeiconbutton {
 		position:absolute;position:fixed;top:70%;right:0px;font-size:36px;opacity:0.75;z-index:10;
 	}
+	.copyimgbutton {
+		position:absolute;position:fixed;top:80%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+	}
 	.labelarea {
 		position:relative;
 		bottom:40px;
@@ -195,7 +198,7 @@
 	}
 	.labelareanonhidden {
 		position:relative;
-		bottom:7px;
+		bottom:10px;
 		z-index:5;
 		background-color:rgba(0, 0, 0, 0.5);
 		color:#3391ff;
@@ -290,18 +293,23 @@
 			for(var i = 0; i < genlabels.length; i++)
 			{
 			    genlabels[i].classList.add('shiftup');
-			    //genlabels[i].classList.toggle('shiftup');
 			}
 		}
 		else {
 			for(var i = 0; i < genlabels.length; i++)
 			{
 			    genlabels[i].classList.remove('shiftup');
-			    //genlabels[i].classList.toggle('shiftup');
 			}
 		}
 	}
+	function copyimgbutton(file, dest) {
+		
+	}
+	copyimgbutton("file", "dest");
 </script>
+<?php
+		copy('file:///var/www/html/general/medialink/medialink/0_Pornsites/AMKingdom/marianna/marianna_all_3/mar316VOO_209603039.jpg', 'file:///var/www/html/general/medialink/medialink/0_Pornsites/AMKingdom/marianna/mar316VOO_209603039.jpg');
+		?>
 </head>
 <body>
 <?php
@@ -319,8 +327,8 @@
 		echo "
 		<form name='setcode' action='mediagallery.php' method='POST'>
 		<center>
-		<br><br><input textarea name='code' id='code' style='font-size:28px;background-color:black;color: #3a4472;'></input>
-		<input type='submit' value='go' style='font-size:28px' />
+		<br><br><input textarea name='code' id='code' style='font-size:52px;background-color:black;color: #3a4472;'></input>
+		<input type='submit' value='go' style='font-size:49px' />
 		</center>
 		</form>";		
 		exit;
@@ -340,7 +348,6 @@
 	}
 	// navigation bar
 	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon backbutton menuitem".menustate()."' /></a>";	
-	/*echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='navicon upbutton menuitem".menustate()."' /></a>";*/
 	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='upbuttoncenter' /></a>";
 	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon homebutton menuitem".menustate()."' /></a>";
 	// sort	
@@ -370,9 +377,6 @@
 			Try to find icon first in icon directory. Then with
 			any image in the folder.
 		*/
-		//$foldericon = "<span class='foldericon foldertext'>$link</span>";
-		//$foldericon = "<span class='foldercontainer'><span class='foldericon'>$link</span></span>";
-		//$foldericon = "<span style='display:inline;border:3px rgb(55,55,55) solid;height:150px;'>$link</span>";
 		$foldericon = "<span class='foldercontainernoicon genlabel'><img src='media/folder.jpg' class='foldericongeneric' /><span class='labelareanonhidden'><br>".substr($link, 0, 10)."</span></span>";
 		$icondir = $_SESSION['basedir']."/"."$link/icon/";
 		$picdir = $_SESSION['basedir']."/"."$link/";
@@ -457,6 +461,7 @@
 <input type="button" value=" t " class=<?php echo "\"labelsbutton menuitem".menustate()."\""; ?> id="labelsbutton" onclick="javascript:togglelabels()" />
 <input type="button" value="[&#8801;]" class=<?php echo "\"statebutton menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
 <input type="button" value=" i " class=<?php echo "\"makeiconbutton menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
+<input type="button" value=" c " class=<?php echo "\"copyimgbutton menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgbutton()" />
 <form name='setdir' id='setdir' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
 <input type="hidden" name="prevdir" id="prevdir">
