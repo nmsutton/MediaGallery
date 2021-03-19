@@ -531,6 +531,7 @@ else{echo "\"false\"";}
 	}
 ?>
 <!-- directories -->
+<center>
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
@@ -568,4 +569,6 @@ else{echo "\"false\"";}
 		echo "<script>shiftlabels();</script>";
 	}
 ?>
+</form>
+</center>
 </form>
