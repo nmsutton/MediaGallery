@@ -104,6 +104,7 @@
 		display:inline-block;
 		width: auto;  	
 		height: 246px;
+		max-width: 600px;
 		background-color: black;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
@@ -127,6 +128,7 @@
 		width: auto;  
 		/*min-width: 120px;*/
 		height: 246px;
+		max-width: 600px;
 		background-color: black;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
@@ -160,7 +162,7 @@
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 		border:2px solid lightblue;
-		/*max-width: 400px;*/
+		max-width: 400px;
 	}
 	.menubutton {
 		position:absolute;position:fixed;top:0%;right:0px;font-size:36px;opacity:0.75;z-index:10;
