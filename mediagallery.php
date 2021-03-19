@@ -216,29 +216,58 @@
 	function subform(link) {
 		document.getElementById("basedir").value = link;
 		document.getElementById("prevdir").value = <?php echo "'".$_SESSION['basedir']."'" ?>;
-		document.forms["setdir"].submit();
+		document.forms["setlink"].action = "mediagallery.php";
+		document.forms["setlink"].submit();
 	}
 	function viewimg(link) {
 		document.getElementById("image").value = link;
 		document.getElementById("basedirimg").value = <?php echo "'".$_SESSION['basedir']."'" ?>;
-		document.forms["setimg"].submit();
+		document.forms["setlink"].action = "imageviewer.php";
+		document.forms["setlink"].target = "_blank";
+		//document.forms["setimg"].submit();
+		document.forms["setlink"].submit();
+		document.forms["setlink"].target = <?php
+			if (isset($_REQUEST['newtab'])) {
+				if ($_REQUEST['newtab'] == "false") {
+					echo "\"_self\";";
+				}
+				else {
+					echo "\"_blank\";";
+				}
+			}
+			else{echo "\"_self\";";}
+		?> 
 	}
 	function viewvid(link) {
 		document.getElementById("video").value = link;
 		document.getElementById("basedirvid").value = <?php echo "'".$_SESSION['basedir']."'" ?>;
-		document.forms["setvid"].submit();
+		document.forms["setlink"].action = "videoviewer.php";
+		document.forms["setlink"].target = "_blank";
+		//document.forms["setvid"].submit();
+		document.forms["setlink"].submit();
+		document.forms["setlink"].target = <?php
+			if (isset($_REQUEST['newtab'])) {
+				if ($_REQUEST['newtab'] == "false") {
+					echo "\"_self\";";
+				}
+				else {
+					echo "\"_blank\";";
+				}
+			}
+			else{echo "\"_self\";";}
+		?> 
 	}
 	function closewindow() {
 		window.close();
 	}	
 	function newtab() {
-		if (document.getElementById("setdir").target == "_self") {
-			document.getElementById("setdir").target = "_blank";	
+		if (document.getElementById("setlink").target == "_self") {
+			document.getElementById("setlink").target = "_blank";	
 			document.getElementById("newtabbutton").value = "[x]";
 			document.getElementById("newtab").value = "true";
 		}		
 		else {
-			document.getElementById("setdir").target = "_self";
+			document.getElementById("setlink").target = "_self";
 			document.getElementById("newtabbutton").value = "[_]";
 			document.getElementById("newtab").value = "false";
 		}
@@ -462,7 +491,7 @@
 <input type="button" value="[&#8801;]" class=<?php echo "\"statebutton menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
 <input type="button" value=" i " class=<?php echo "\"makeiconbutton menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
 <input type="button" value=" c " class=<?php echo "\"copyimgbutton menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgbutton()" />
-<form name='setdir' id='setdir' action='mediagallery.php' method = "POST" target="_self">
+<form name='setlink' id='setlink' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
 <input type="hidden" name="prevdir" id="prevdir">
 <input type="hidden" name="newtab" id="newtab" value=
@@ -489,13 +518,13 @@ else{echo "\"false\"";}
 		$ntval = $_REQUEST['newtab'];
 		if ($ntval == "true") {
 			echo "<script>
-			document.getElementById('setdir').target = '_blank';	
+			document.getElementById('setlink').target = '_blank';	
 			document.getElementById('newtabbutton').value = '[x]';
 			</script>";
 		}
 		else if ($ntval == "false") {
 			echo "<script>
-			document.getElementById('setdir').target = '_self';	
+			document.getElementById('setlink').target = '_self';	
 			document.getElementById('newtabbutton').value = '[_]';
 			</script>";
 		}
@@ -509,9 +538,9 @@ else{echo "\"false\"";}
 		}
 	}
 ?>
-</form>
+<!--/form-->
 <!-- images -->
-<form name='setimg' action='imageviewer.php' method = "POST" target="_blank">
+<!--form name='setimg' action='imageviewer.php' method = "POST" target="_blank"-->
 <input type="hidden" name="image" id="image">
 <input type="hidden" name="basedirimg" id="basedirimg">
 <?php
@@ -523,9 +552,9 @@ else{echo "\"false\"";}
 		}
 	}
 ?>
-</form>
+<!--/form-->
 <!-- videos -->
-<form name='setvid' action='videoviewer.php' method = "POST" target="_blank">
+<!--form name='setvid' action='videoviewer.php' method = "POST" target="_blank"-->
 <input type="hidden" name="video" id="video">
 <input type="hidden" name="basedirvid" id="basedirvid">
 <?php
