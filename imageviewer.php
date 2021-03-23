@@ -138,26 +138,33 @@
 <body>
 <center>
 <?php
+	$image = "";
+	$imagename = "";
+	$targetpath = "";
+	$icondir = "/icon/";
+	$html_root = "/var/www/html";
+	if (isset($_REQUEST['image'])) {
+		$image = str_replace('file://', '', $_REQUEST['image']);
+		$image_copy = $html_root.$image;
+		$imagename = basename($image);
+		$targetpath = str_replace('file://', '', $_REQUEST['basedirimg'].$icondir.$imagename);
+	}
 	if (isset($_REQUEST['makeicon'])) {
 		if ($_REQUEST['makeicon'] == "true") {
-			$icondir = "/icon/";
+			
 			$icondirpath = $_REQUEST['basedirimg'].$icondir;
-			//$icondirpath = str_replace('/var/www/html', '', $icondirpath);
 			$icondirpath = str_replace('file://', '', $icondirpath);
-			echo "$icondirpath";
-			echo "<br>".__DIR__;
-			//mkdir(__DIR__."testing");
-			if (!file_exists($icondirpath)) {
-			    mkdir($icondirpath, 0777, true);
-			}
-			exit;
+			//if (!file_exists($icondirpath)) {
+			    mkdir($icondirpath);
+			    copy($image_copy, $targetpath);
+			//}
+			//    echo $image."<br>".$targetpath;
+			//    exit;
 			echo "<script>window.close();</script>";
 		}
 	}
-	if (isset($_REQUEST['image'])) {
-		$image = str_replace('file://', '', $_REQUEST['image']);
-		echo "<img src='$image' id='image' class='responsive-image'>";
-	}
+	
+	echo "<img src='$image' id='image' class='responsive-image'>";
 ?>
 </center>
 <form name='setdir' action='mediagallery.php' method = "POST">
