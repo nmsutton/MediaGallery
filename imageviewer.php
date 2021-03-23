@@ -138,6 +138,22 @@
 <body>
 <center>
 <?php
+	if (isset($_REQUEST['makeicon'])) {
+		if ($_REQUEST['makeicon'] == "true") {
+			$icondir = "/icon/";
+			$icondirpath = $_REQUEST['basedirimg'].$icondir;
+			//$icondirpath = str_replace('/var/www/html', '', $icondirpath);
+			$icondirpath = str_replace('file://', '', $icondirpath);
+			echo "$icondirpath";
+			echo "<br>".__DIR__;
+			//mkdir(__DIR__."testing");
+			if (!file_exists($icondirpath)) {
+			    mkdir($icondirpath, 0777, true);
+			}
+			exit;
+			echo "<script>window.close();</script>";
+		}
+	}
 	if (isset($_REQUEST['image'])) {
 		$image = str_replace('file://', '', $_REQUEST['image']);
 		echo "<img src='$image' id='image' class='responsive-image'>";

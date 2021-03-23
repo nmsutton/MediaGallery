@@ -70,6 +70,7 @@
 		display:inline-block;
 		width: auto;  
 		height: 250px;
+		min-width: 100px;
 		/* reduce icon quality for fast processing */
 		image-resolution: 10dpi; 
 		word-wrap: break-word;
@@ -86,8 +87,8 @@
 		/*width:70px;
 		height:70px;*/
 		width:10%;
-		height:8%;
-		opacity: 0.75;		
+		height:10%;
+		opacity: 0.95;		
 	}
 	.upbuttoncenter {
 		position:absolute;
@@ -95,7 +96,7 @@
 		top:0px;
 		width:9%;
 		height:18%;
-		opacity: 0.5;		
+		opacity: 0.75;		
 		z-index: 10;
 		position: fixed;
 	}
@@ -105,6 +106,7 @@
 		width: auto;  	
 		height: 246px;
 		max-width: 600px;
+		min-width: 100px;
 		background-color: black;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
@@ -126,9 +128,9 @@
 		position:relative;
 		display:inline-block;
 		width: auto;  
-		/*min-width: 120px;*/
 		height: 246px;
 		max-width: 600px;
+		min-width: 100px;
 		background-color: black;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
@@ -158,6 +160,7 @@
 		display:inline-block;
 		width: auto;  
 		height: 246px;
+		min-width: 100px;
 		background-color: black;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
@@ -165,31 +168,31 @@
 		max-width: 400px;
 	}
 	.menubutton {
-		position:absolute;position:fixed;top:0%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:0%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.closebutton {
-		position:absolute;position:fixed;top:10%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:10%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}	
 	.newtabbutton {
-		position:absolute;position:fixed;top:20%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:20%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}	
 	.labelsbutton {
-		position:absolute;position:fixed;top:30%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:30%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.backbutton {
-		position:absolute;position:fixed;top:40%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:40%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.homebutton {
-		position:absolute;position:fixed;top:50%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:50%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.statebutton {
-		position:absolute;position:fixed;top:60%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:60%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}	
 	.makeiconbutton {
-		position:absolute;position:fixed;top:70%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:70%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.copyimgbutton {
-		position:absolute;position:fixed;top:80%;right:0px;font-size:36px;opacity:0.75;z-index:10;
+		position:absolute;position:fixed;top:80%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.labelarea {
 		position:relative;

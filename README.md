@@ -20,6 +20,14 @@ If the \<target_folder\> is outside of the webserver directory, a softlink shoul
 
 In practice, it has been found that some parent directories to the \<target_folder\> need to be made executable and have read and write access given to them for the web server to allow permission to access the \<target_folder\> through a web browser. This may not be needed on some systems.
 
+# Enabling semi-automated icon generation
+
+At least with the Apache2 webserver on Linux, for php to create an icon, based on first-hand experience it was found that a folder must be in the "www-data" group owned by the "www-data" user [reference](https://stackoverflow.com/questions/5246114/php-mkdir-permission-denied-problem). This allows the webserver access to create a icon folder. Also it was found the the permissions set as 777 in both the target directory and its 1st or 2cnd level parent directories enabled the created directory to be at an access level that allowed php to copy the image into the icon directory. Perhaps less access then 777 could be used, but 777 was found to work.
+
+Example of changing the user and group:
+
+`chown -R www-data:www-data /path/to/webserver/www`
+
 # Password security
 On your local system rename dbaccess_example.php to dbaccess.php and enter your username and password for database access used to access the mediagallery database. Note: dbaccess.php is in the gitignore file to avoid password credentials being uploaded to the source control website.
 
