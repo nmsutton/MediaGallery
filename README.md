@@ -28,6 +28,8 @@ Example of changing the user and group:
 
 `chown -R www-data:www-data /path/to/webserver/www`
 
+This advice about permissions and ownership is based on what worked with first-hand trial-and-error testing. It is unlear why specific ownership is needed given permissions set to 777 but it was found to work. Other settings may work as well.
+
 # Password security
 On your local system rename dbaccess_example.php to dbaccess.php and enter your username and password for database access used to access the mediagallery database. Note: dbaccess.php is in the gitignore file to avoid password credentials being uploaded to the source control website.
 
