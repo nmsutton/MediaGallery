@@ -141,6 +141,7 @@
 	$image = "";
 	$imagename = "";
 	$targetpath = "";
+	$targetfldr = "";
 	$icondir = "/icon/";
 	$html_root = "/var/www/html";
 	if (isset($_REQUEST['image'])) {
@@ -148,18 +149,25 @@
 		$image_copy = $html_root.$image;
 		$imagename = basename($image);
 		$targetpath = str_replace('file://', '', $_REQUEST['basedirimg'].$icondir.$imagename);
+		$targetfldr = str_replace('file://', '', dirname($_REQUEST['basedirimg']));
 	}
 	if (isset($_REQUEST['makeicon'])) {
-		if ($_REQUEST['makeicon'] == "true") {
-			
+		if ($_REQUEST['makeicon'] == "true") {			
 			$icondirpath = $_REQUEST['basedirimg'].$icondir;
 			$icondirpath = str_replace('file://', '', $icondirpath);
-			//if (!file_exists($icondirpath)) {
+			if (!file_exists($icondirpath)) {
 			    mkdir($icondirpath);
-			    copy($image_copy, $targetpath);
-			//}
-			//    echo $image."<br>".$targetpath;
-			//    exit;
+			}
+			copy($image_copy, $targetpath);
+			echo "<script>window.close();</script>";
+		}
+	}
+	if (isset($_REQUEST['copyimg'])) {
+		if ($_REQUEST['copyimg'] == "true") {
+			echo $image_copy;
+			echo "<br>".$targetfldr;
+			exit;
+			copy($image_copy, $targetfldr);
 			echo "<script>window.close();</script>";
 		}
 	}

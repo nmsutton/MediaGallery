@@ -54,7 +54,7 @@
 		border: 3px rgb(55,55,55) solid;
 		word-wrap: break-word;
 		width:10%;
-		height:8%;
+		height:16%;
 	}
 	input[type=submit] {
 		padding: 2px 4px;
@@ -87,15 +87,15 @@
 		/*width:70px;
 		height:70px;*/
 		width:10%;
-		height:10%;
+		height:16%;
 		opacity: 0.95;		
 	}
 	.upbuttoncenter {
 		position:absolute;
-		left:46%;
+		left:65%;
 		top:0px;
-		width:9%;
-		height:18%;
+		width:7%;
+		height:14%;
 		opacity: 0.75;		
 		z-index: 10;
 		position: fixed;
@@ -171,28 +171,28 @@
 		position:absolute;position:fixed;top:0%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.closebutton {
-		position:absolute;position:fixed;top:10%;right:0px;font-size:36px;opacity:0.95;z-index:10;
-	}	
-	.newtabbutton {
 		position:absolute;position:fixed;top:20%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}	
+	.newtabbutton {
+		position:absolute;position:fixed;top:40%;right:0px;font-size:36px;opacity:0.95;z-index:10;
+	}	
 	.labelsbutton {
-		position:absolute;position:fixed;top:30%;right:0px;font-size:36px;opacity:0.95;z-index:10;
+		position:absolute;position:fixed;top:60%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.backbutton {
-		position:absolute;position:fixed;top:40%;right:0px;font-size:36px;opacity:0.95;z-index:10;
+		position:absolute;position:fixed;top:80%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.homebutton {
-		position:absolute;position:fixed;top:50%;right:0px;font-size:36px;opacity:0.95;z-index:10;
+		position:absolute;position:fixed;top:0%;right:10%;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.statebutton {
-		position:absolute;position:fixed;top:60%;right:0px;font-size:36px;opacity:0.95;z-index:10;
+		position:absolute;position:fixed;top:20%;right:10%;font-size:36px;opacity:0.95;z-index:10;
 	}	
 	.makeiconbutton {
-		position:absolute;position:fixed;top:70%;right:0px;font-size:36px;opacity:0.95;z-index:10;
+		position:absolute;position:fixed;top:40%;right:10%;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.copyimgbutton {
-		position:absolute;position:fixed;top:80%;right:0px;font-size:36px;opacity:0.95;z-index:10;
+		position:absolute;position:fixed;top:60%;right:10%;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.labelarea {
 		position:relative;
@@ -308,9 +308,6 @@
 			document.getElementById("menustate").value = "true";
 		}
 	}
-	function makeicon() {
-
-	}
 	function makeicontoggle() {
 		if (document.getElementById("makeicon").value == "true") {
 			document.getElementById("makeicon").value = "false";
@@ -319,6 +316,16 @@
 		else {
 			document.getElementById("makeicon").value = "true";
 			document.getElementById("makeiconbutton").value = "[i]";
+		}
+	}
+	function copyimgtoggle() {
+		if (document.getElementById("copyimg").value == "true") {
+			document.getElementById("copyimg").value = "false";
+			document.getElementById("copyimgbutton").value = " c ";
+		}
+		else {
+			document.getElementById("copyimg").value = "true";
+			document.getElementById("copyimgbutton").value = "[c]";
 		}
 	}
 	function shiftlabels() {
@@ -336,10 +343,6 @@
 			}
 		}
 	}
-	function copyimgbutton(file, dest) {
-		
-	}
-	copyimgbutton("file", "dest");
 </script>
 <?php
 		copy('file:///var/www/html/general/medialink/medialink/0_Pornsites/AMKingdom/marianna/marianna_all_3/mar316VOO_209603039.jpg', 'file:///var/www/html/general/medialink/medialink/0_Pornsites/AMKingdom/marianna/mar316VOO_209603039.jpg');
@@ -495,7 +498,7 @@
 <input type="button" value=" t " class=<?php echo "\"labelsbutton menuitem".menustate()."\""; ?> id="labelsbutton" onclick="javascript:togglelabels()" />
 <input type="button" value="[&#8801;]" class=<?php echo "\"statebutton menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
 <input type="button" value=" i " class=<?php echo "\"makeiconbutton menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
-<input type="button" value=" c " class=<?php echo "\"copyimgbutton menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgbutton()" />
+<input type="button" value=" c " class=<?php echo "\"copyimgbutton menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgtoggle()" />
 <form name='setlink' id='setlink' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
 <input type="hidden" name="prevdir" id="prevdir">
@@ -518,6 +521,7 @@ else{echo "\"false\"";}
 ?> 
 >
 <input type="hidden" name="makeicon" id="makeicon" value="false">
+<input type="hidden" name="copyimg" id="copyimg" value="false">
 <?php 
 	if (isset($_REQUEST['newtab'])) {
 		$ntval = $_REQUEST['newtab'];
