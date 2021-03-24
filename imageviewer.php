@@ -149,7 +149,7 @@
 		$image_copy = $html_root.$image;
 		$imagename = basename($image);
 		$targetpath = str_replace('file://', '', $_REQUEST['basedirimg'].$icondir.$imagename);
-		$targetfldr = str_replace('file://', '', dirname($_REQUEST['basedirimg']));
+		$targetfldr = str_replace('file://', '', dirname($_REQUEST['basedirimg'])."/".$imagename);
 	}
 	if (isset($_REQUEST['makeicon'])) {
 		if ($_REQUEST['makeicon'] == "true") {			
@@ -164,9 +164,9 @@
 	}
 	if (isset($_REQUEST['copyimg'])) {
 		if ($_REQUEST['copyimg'] == "true") {
-			echo $image_copy;
-			echo "<br>".$targetfldr;
-			exit;
+			//echo $image_copy;
+			//echo "<br>".$targetfldr;
+			//exit;
 			copy($image_copy, $targetfldr);
 			echo "<script>window.close();</script>";
 		}
