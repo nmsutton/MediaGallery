@@ -92,8 +92,8 @@
 	}
 	.upbuttoncenter {
 		position:absolute;
-		left:65%;
-		top:0px;
+		left:47%;
+		bottom:0px;
 		width:7%;
 		height:14%;
 		opacity: 0.75;		
@@ -167,7 +167,7 @@
 		border:2px solid lightblue;
 		max-width: 400px;
 	}
-	.menubutton {
+	.backbutton {
 		position:absolute;position:fixed;top:0%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.closebutton {
@@ -179,8 +179,8 @@
 	.labelsbutton {
 		position:absolute;position:fixed;top:60%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
-	.backbutton {
-		position:absolute;position:fixed;top:80%;right:0px;font-size:36px;opacity:0.95;z-index:10;
+	.menubutton {
+		position:absolute;position:fixed;bottom:0%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.homebutton {
 		position:absolute;position:fixed;top:0%;right:10%;font-size:36px;opacity:0.95;z-index:10;
@@ -193,6 +193,9 @@
 	}
 	.copyimgbutton {
 		position:absolute;position:fixed;top:60%;right:10%;font-size:36px;opacity:0.95;z-index:10;
+	}
+	.reloadbutton {
+		position:absolute;position:fixed;bottom:0%;right:10%;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.labelarea {
 		position:relative;
@@ -327,6 +330,9 @@
 			document.getElementById("copyimg").value = "true";
 			document.getElementById("copyimgbutton").value = "[c]";
 		}
+	}
+	function reload() {
+		location.reload();
 	}
 	function shiftlabels() {
 		var genlabels = document.getElementsByClassName("genlabel");
@@ -499,6 +505,7 @@
 <input type="button" value="[&#8801;]" class=<?php echo "\"statebutton menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
 <input type="button" value=" i " class=<?php echo "\"makeiconbutton menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
 <input type="button" value=" c " class=<?php echo "\"copyimgbutton menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgtoggle()" />
+<input type="button" value=" r " class=<?php echo "\"reloadbutton menuitem".menustate()."\""; ?> id="reloadbutton" onclick="javascript:reload()" />
 <form name='setlink' id='setlink' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
 <input type="hidden" name="prevdir" id="prevdir">
