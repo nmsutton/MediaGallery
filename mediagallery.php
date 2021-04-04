@@ -90,16 +90,30 @@
 		height:16%;
 		opacity: 0.95;		
 	}
-	.upbuttoncenter {
-		position:absolute;
-		left:47%;
-		bottom:0px;
-		width:7%;
-		height:14%;
-		opacity: 0.75;		
-		z-index: 10;
-		position: fixed;
+	@media screen and (max-width: 1400px) {
+		.upbuttoncenter {
+			position:absolute;
+			left:47%;
+			bottom:0px;
+			width:15%;
+			height:14%;
+			opacity: 0.75;		
+			z-index: 10;
+			position: fixed;
+		}
 	}
+	@media screen and (max-width: 1920px) {
+		.upbuttoncenter {
+			position:absolute;
+			left:47%;
+			bottom:0px;
+			width:7%;
+			height:14%;
+			opacity: 0.75;		
+			z-index: 10;
+			position: fixed;
+		}
+	}	
 	.foldercontainer {
 		position:relative;
 		display:inline-block;
@@ -196,6 +210,9 @@
 	}
 	.reloadbutton {
 		position:absolute;position:fixed;bottom:0%;right:10%;font-size:36px;opacity:0.95;z-index:10;
+	}
+	.folderlinkbutton {
+		position:absolute;position:fixed;bottom:0%;right:20%;font-size:36px;opacity:0.95;z-index:10;
 	}
 	.labelarea {
 		position:relative;
@@ -310,6 +327,7 @@
 		else {
 			document.getElementById("menustate").value = "true";
 		}
+		togglemenu();
 	}
 	function makeicontoggle() {
 		if (document.getElementById("makeicon").value == "true") {
@@ -320,6 +338,7 @@
 			document.getElementById("makeicon").value = "true";
 			document.getElementById("makeiconbutton").value = "[i]";
 		}
+		togglemenu();
 	}
 	function copyimgtoggle() {
 		if (document.getElementById("copyimg").value == "true") {
@@ -330,6 +349,7 @@
 			document.getElementById("copyimg").value = "true";
 			document.getElementById("copyimgbutton").value = "[c]";
 		}
+		togglemenu();
 	}
 	function reload() {
 		location.reload();
@@ -389,10 +409,14 @@
 	if ($updir == preg_replace('/(.*)\/.*$/', '$1', $origdir)) {
 		$updir = $origdir;
 	}
+	$folderlink = preg_replace('/file\:\/\/(.*)$/', '$1/', $basedir);
+	//$folderlink = preg_replace('(.*)$/', '/var/$1/', $folderlink);
+	//$folderlink = preg_replace('/(.*)$/', '$1/', $basedir);
 	// navigation bar
 	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon backbutton menuitem".menustate()."' /></a>";	
 	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='upbuttoncenter' /></a>";
 	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon homebutton menuitem".menustate()."' /></a>";
+	echo "<a href='$folderlink'><img src='media/folderlink.jpg' class='navicon folderlinkbutton menuitem".menustate()."' /></a>";
 	// sort	
 	if ($handle = opendir($basedir)) {
 		while (false !== ($entry = readdir($handle))) {
