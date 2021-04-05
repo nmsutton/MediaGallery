@@ -1,4 +1,8 @@
 <html>
+<!--
+	References: https://www.plus2net.com/javascript_tutorial/clock.php
+	https://stackoverflow.com/questions/10556879/changing-the-1-24-hour-to-1-12-hour-for-the-gethours-method
+-->
 <head>
 <?php
 	include ("dbaccess.php");
@@ -18,6 +22,7 @@
 	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+$/s';
 	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
 	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
+	$zippattern = '/.*[.](zip)+$/s';
 	$codedb = '';
 	$filelist = array();
 
@@ -181,6 +186,19 @@
 		border:2px solid lightblue;
 		max-width: 400px;
 	}
+	.zipicon {
+		position:relative;
+		display:inline-block;
+		width: auto;  
+		/*height: 246px;
+		min-width: 100px;*/
+		background-color: black;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		/*border:2px solid lightblue;*/
+		font-size: 16px;
+		max-width: 150px;
+	}
 	.backbutton {
 		position:absolute;position:fixed;top:0%;right:0px;font-size:36px;opacity:0.95;z-index:10;
 	}
@@ -234,6 +252,17 @@
 	.shiftup {
 		position:relative;
 		bottom:30px;
+	}
+	.clock {
+		position:absolute;
+		position:fixed;
+		bottom:16%;
+		right:2.6%;
+		font-size:24px;
+		opacity:0.95;
+		z-index:20;
+		background-color:rgba(0, 0, 0, 0.75);
+		padding:7px;
 	}
 	a { color: #3391ff; }
 </style>
@@ -370,11 +399,26 @@
 		}
 	}
 </script>
+<script type="text/javascript"> 
+	function hours12(date) { return (date.getHours() + 24) % 12 || 12; }
+	function display_c(){
+	var refresh=1000; // Refresh rate in milli seconds
+	mytime=setTimeout('display_ct()',refresh)
+	}
+
+	function display_ct() {
+	var x = new Date()
+	var h12 = (x.getHours() + 24) % 12 || 12
+	var x2 = h12 + ":" + x.getMinutes()
+	document.getElementById('ct').innerHTML = x2;
+	display_c();
+	 }
+</script>
 <?php
 		copy('file:///var/www/html/general/medialink/medialink/0_Pornsites/AMKingdom/marianna/marianna_all_3/mar316VOO_209603039.jpg', 'file:///var/www/html/general/medialink/medialink/0_Pornsites/AMKingdom/marianna/mar316VOO_209603039.jpg');
 		?>
 </head>
-<body>
+<body onload=display_ct();>
 <?php
 	// process login
 	if (isset($_POST['code'])) {
@@ -521,7 +565,23 @@
 
 		return $videoicon;
 	}
+	function zipicon($link, $zippattern) {
+		$videoicon = "<span class='zipicon'>$link</span>";
+		$link_noext = preg_replace($zippattern, '$1', $link);
+
+		//$icondir = $_SESSION['basedir']."/icon/videos/";
+		//$iconpath = $icondir.$link_noext."_thumb.jpg";
+		if (file_exists($iconpath)) {			
+			$icon2 = str_replace('file://', '', "$iconpath");			
+			$icon3 = str_replace('/var/www/html', '', "$icon2");
+			$videoicon = "<img src='media/zipfile.jpg' class='zipicon' />";
+		}
+		$videoicon = "<span class='zipicon'><img src='media/zipfile.jpg' class='zipicon' />$link</span>";
+
+		return $videoicon;
+	}
 ?>
+<div class="clock" id='ct'>Clock</div>
 <input type="button" value="|&#8801;|" class="menubutton" id="menubutton" onclick="javascript:togglemenu()" />
 <input type="button" value=" x " class=<?php echo "\"closebutton menuitem".menustate()."\""; ?> onclick="javascript:closewindow()" />
 <input type="button" value="[_]" class=<?php echo "\"newtabbutton menuitem".menustate()."\""; ?> id="newtabbutton" onclick="javascript:newtab()" />
@@ -607,6 +667,17 @@ else{echo "\"false\"";}
 	}
 	if (isset($_REQUEST['labelvisibility'])) {
 		echo "<script>shiftlabels();</script>";
+	}
+?>
+<!-- zip files -->
+<input type="hidden" name="zipfile" id="zipfile">
+<?php
+	foreach ($filelist as $entry) {
+		if (preg_match($zippattern, $entry)) {
+        	$basedir2 = str_replace('/var/www/html', '', $basedir);
+        	//echo "<a href='$basedir2/$entry'>".zipicon("$entry", $zippattern)."</a>";
+        	echo zipicon("$entry", $zippattern);
+		}
 	}
 ?>
 </form>
