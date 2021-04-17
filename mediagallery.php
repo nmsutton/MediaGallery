@@ -23,6 +23,7 @@
 	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
 	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
 	$zippattern = '/.*[.](zip)+$/s';
+	$filepattern = '/.*[.](001|002|003|004|005|006|007|008|009)+$/s';
 	$codedb = '';
 	$filelist = array();
 
@@ -580,6 +581,21 @@
 
 		return $videoicon;
 	}
+	function fileicon($link, $filepattern) {
+		$videoicon = "<span class='zipicon'>$link</span>";
+		$link_noext = preg_replace($filepattern, '$1', $link);
+
+		//$icondir = $_SESSION['basedir']."/icon/videos/";
+		//$iconpath = $icondir.$link_noext."_thumb.jpg";
+		if (file_exists($iconpath)) {			
+			$icon2 = str_replace('file://', '', "$iconpath");			
+			$icon3 = str_replace('/var/www/html', '', "$icon2");
+			$videoicon = "<img src='media/file.jpg' class='zipicon' />";
+		}
+		$videoicon = "<span class='zipicon'><img src='media/file.jpg' class='zipicon' />$link</span>";
+
+		return $videoicon;
+	}
 ?>
 <div class="clock" id='ct'>Clock</div>
 <input type="button" value="|&#8801;|" class="menubutton" id="menubutton" onclick="javascript:togglemenu()" />
@@ -663,6 +679,8 @@ else{echo "\"false\"";}
 		if (preg_match($vidpattern, $entry)) {
         	$basedir2 = str_replace('/var/www/html', '', $basedir);
         	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $vidpattern2)."</a>";
+        	//$basedir2 = str_replace('file://', 'http://localhost', $basedir2);
+        	//echo "<a href='$basedir2/$entry'>".videoicon("$entry", $vidpattern2)."</a>";
 		}
 	}
 	if (isset($_REQUEST['labelvisibility'])) {
@@ -677,6 +695,18 @@ else{echo "\"false\"";}
         	$basedir2 = str_replace('/var/www/html', '', $basedir);
         	//echo "<a href='$basedir2/$entry'>".zipicon("$entry", $zippattern)."</a>";
         	echo zipicon("$entry", $zippattern);
+		}
+	}
+?>
+<!-- general files -->
+<input type="hidden" name="file" id="file">
+<?php
+	foreach ($filelist as $entry) {
+		if (preg_match($filepattern, $entry)) {
+        	$basedir2 = str_replace('file://', '', $basedir);
+        	//$basedir2 = str_replace('/var/www/html', '', $basedir2);
+        	echo "<a href='$basedir2/$entry'>".fileicon("$entry", $filepattern)."</a>";
+        	//echo fileicon("$entry", $filepattern);
 		}
 	}
 ?>

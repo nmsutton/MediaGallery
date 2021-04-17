@@ -51,6 +51,10 @@
 		overflow-wrap: break-word;
 		border: 0px rgb(55,55,55) solid;
 	}
+	a:link {color: #3a4472;}  
+	a:visited {color: #3a4472}  
+	a:hover {color: #3a4472}  
+	a:active {color: #3a4472}  
 </style>
 <script>
 	function closewindow() {
@@ -91,7 +95,7 @@
 		echo ">
 			<source src='$video'>
 		</video>";
-		echo "<br><br><center><textarea class='filenamearea'>$video</textarea></center>";
+		echo "<br><br><center><div class='filenamearea'><a href='$video'>$video</a></div></center>";
 	}
 ?>
 </center>
