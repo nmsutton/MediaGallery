@@ -75,6 +75,11 @@
 <body>
 <center>
 <?php
+	$userpassaddrfile = "/general/software/general/access/userpassaddr.php";
+	$userpassaddr = "";
+	if (file_exists($userpassaddrfile)) {
+		$userpassaddr = file_get_contents($userpassaddrfile);
+	}
 	function findext($link) {
 		$vidext = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|ogv)+/s';
 		$linkext = preg_replace($vidext, '$1', $link);
@@ -95,7 +100,7 @@
 		echo ">
 			<source src='$video'>
 		</video>";
-		echo "<br><br><center><div class='filenamearea'><a href='$video'>$video</a></div></center>";
+		echo "<br><br><center><div class='filenamearea'><a href='$userpassaddr$video'>$video</a></div></center>";
 	}
 ?>
 </center>
