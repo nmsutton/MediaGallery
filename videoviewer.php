@@ -100,7 +100,9 @@
 		echo ">
 			<source src='$video'>
 		</video>";
-		echo "<br><br><center><div class='filenamearea'><a href='$userpassaddr$video'>$video</a></div></center>";
+		$vidpattern2 = '/\/.*\/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
+		$link_noext = preg_replace($vidpattern2, '$1.$2', $video);
+		echo "<br><br><center><div class='filenamearea'><a href='$userpassaddr$video' style='text-decoration:none'>$link_noext</a></div></center>";
 	}
 ?>
 </center>

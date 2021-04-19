@@ -63,11 +63,15 @@
 		position:absolute;position:fixed;top:0%;right:0px;font-size:36px;
 	}
 	.zoomin {
-		position:absolute;position:fixed;top:33%;right:0px;font-size:36px;
+		position:absolute;position:fixed;top:20%;right:0px;font-size:36px;
 	}
 	.zoomout {
-		position:absolute;position:fixed;top:66%;right:0px;font-size:36px;
+		position:absolute;position:fixed;top:40%;right:0px;font-size:36px;
 	}	
+	.linkpos {
+		position:absolute;position:fixed;top:60%;right:3%;font-size:36px;
+		width:10%;height:15%;
+	}
 </style>
 <script>
 	function closewindow() {
@@ -182,5 +186,6 @@
 <input type="button" value=" x " class="closebutton" onclick="javascript:closewindow()" />
 <input type="button" value=" + " class="zoomin" onclick="javascript:zoomin()" />
 <input type="button" value=" - " class="zoomout" onclick="javascript:zoomout()" />
+<a href="<?php echo $image ?>"><img class="linkpos" src="media/folderlink.jpg"></a>
 </body>
 </html>

@@ -18,14 +18,20 @@
 <?php 
 	$origdir = 'file:///var/www/html/general/medialink/medialink';  
 	$specialicons = '/var/www/html/general/medialink/special_icons.php';
+	$exceptioniconsfile = '/var/www/html/general/medialink/exception_icons.php';
+	$addticondir = '/var/www/html/general/medialink/medialink3';  
 	$extpattern = '/.*[.][a-zA-Z0-9]+$/s';
 	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+$/s';
 	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
 	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
 	$zippattern = '/.*[.](zip)+$/s';
-	$filepattern = '/.*[.](001|002|003|004|005|006|007|008|009)+$/s';
+	$filepattern = '/.*[.](001|002|003|004|005|006|007|008)+$/s';
+	$filepattern2 = '/.*[.](009)+$/s';
 	$codedb = '';
 	$filelist = array();
+
+	$eipresent=false;
+	if (file_exists($exceptioniconsfile)) {include ($exceptioniconsfile);$eipresent=true;}
 
 	if (isset($_REQUEST['basedir'])) {
 		$_SESSION['basedir'] = $_REQUEST['basedir'];
@@ -472,6 +478,55 @@
 	    closedir($handle);
 	}
 	sort($filelist);
+	//$addticons = array();
+	/*if ($handle = opendir($addticondir)) {
+		while (false !== ($entry = readdir($handle))) {
+				echo "dir: ".$addticondir." ".$entry."<br>";
+			if ($entry != "." && $entry != ".." && preg_match($imgpattern, $entry)) {
+				array_push($addticons, $entry);
+			}
+		}
+	    closedir($handle);
+	}*/
+	// open the current directory
+	//$dhandle = opendir($addticondir);
+	// define an array to hold the files
+	$addticons = array();
+
+	function listDirectory($path, $addticons)
+	{
+	    $handle = @opendir($path);
+	 
+	    while (false !== ($file = readdir($handle))) {
+	        if ($file == '.' || $file == '..') continue;
+	 
+	        if ( is_dir("$path/$file")) {
+	            //echo "$path/$file\n";
+	            array_push($addticons, "$path/$file");// $addticons
+	            $addticons = listDirectory("$path/$file", $addticons);
+	        } else {
+	            //echo "$path/$file\n";
+	            array_push($addticons, "$path/$file");
+	        }
+	    }
+	 
+	    closedir($handle);
+
+	    return $addticons;
+	}
+	 
+	$addticons = listDirectory($addticondir, $addticons);
+
+	/*for ($i = 0; $i < count($addticons); $i++) {
+		echo $addticons[$i]."<br>";
+	}*/
+	/*echo "<select name=\"file\">\n";
+	// Now loop through the files, echoing out a new select option for each one
+	foreach( $files as $fname )
+	{
+	   echo "<option>{$fname}</option>\n";
+	}
+	echo "</select>\n";*/
 	function menustate() {
 		$state = "";
 		if (isset($_REQUEST['menustate'])) {
@@ -484,7 +539,7 @@
 		}
 		return $state;
 	}
-	function foldericon($link, $imgpattern, $specialicons) {
+	function foldericon($link, $imgpattern, $specialicons, $addticons, $exceptionicons) {
 		/*
 			Try to find icon first in icon directory. Then with
 			any image in the folder.
@@ -492,6 +547,8 @@
 		$foldericon = "<span class='foldercontainernoicon genlabel'><img src='media/folder.jpg' class='foldericongeneric' /><span class='labelareanonhidden'><br>".substr($link, 0, 10)."</span></span>";
 		$icondir = $_SESSION['basedir']."/"."$link/icon/";
 		$picdir = $_SESSION['basedir']."/"."$link/";
+		$linkpattern = '/\/.*\/(.*)$/s';
+		$link_name = preg_replace($linkpattern, '$1', $link);
 		$sipresent = false;
 		$updateicon = false;
 		if (file_exists($specialicons)) {include ($specialicons);$sipresent=true;}
@@ -507,6 +564,7 @@
 		}
 		if ($iconlist[0] != "") {
 			// icon folder found
+			//echo "1st option<br>";
 			$icon = $icondir."/".$iconlist[0];
 			$icon2 = str_replace('file://', '', "$icon");			
 			$icon3 = str_replace('/var/www/html', '', "$icon2");
@@ -514,12 +572,14 @@
 		}
 		else if ($sipresent==true && $siconsdict[$link] != "") {
 			// special icons
+			//echo "2cnd option<br>";
 			$icon3 = $siconsdict[$link];
 			
 			$updateicon = true;
 		}
 		else {
 			// any image in folder for icon
+			//echo "3rd option ".count($addticons)."<br>";
 			$piclist = array();
 			if ($handle = opendir($picdir)) {
 				while (false !== ($entry = readdir($handle))) {
@@ -529,7 +589,22 @@
 				}
 			    closedir($handle);
 			}
-			if ($piclist[0] != "") {
+			for ($i = 0; $i < count($addticons); $i++) {
+				$new_name = preg_replace($linkpattern, '$1', $addticons[$i]);
+				//echo "names: "."$link_name.jpg"." ".$new_name."<br>";
+				if ($link_name == $new_name || "$link_name.jpg" == $new_name ) {	
+					if ($eipresent == false || ($eipresent == true && !in_array($link, $exceptionicons))) {	
+						if (preg_match($imgpattern, $addticons[$i])) {	
+							$icon = $addticons[$i];
+							$icon2 = str_replace('file://', '', "$icon");			
+							$icon3 = str_replace('/var/www/html', '', "$icon2");
+							//echo $new_name." ".$link_name."<br>";
+							$updateicon = true;
+						}
+					}
+				}
+			}
+			if ($piclist[0] != "" && $updateicon == false) {
 				$icon = $picdir."/".$piclist[0];
 				$icon2 = str_replace('file://', '', "$icon");			
 				$icon3 = str_replace('/var/www/html', '', "$icon2");
@@ -549,6 +624,7 @@
 			$foldericon = $foldericon."'><br>".substr($link, 0, 10)."</span></span>";
 			//$foldericon = $foldericon."'></span></span>";
 		}
+		//echo "names: "."$link_name.jpg"." ".$new_name."<br>";
 
 		return $foldericon;
 	}
@@ -581,18 +657,29 @@
 
 		return $videoicon;
 	}
-	function fileicon($link, $filepattern) {
+	function fileicon($link, $filepattern, $addticons) {
 		$videoicon = "<span class='zipicon'>$link</span>";
 		$link_noext = preg_replace($filepattern, '$1', $link);
+		$linkpattern = '/\/.*\/(.*)$/s';
+		$link_name = preg_replace($linkpattern, '$1', $link);
+		$icon = "media/file.jpg";
 
 		//$icondir = $_SESSION['basedir']."/icon/videos/";
 		//$iconpath = $icondir.$link_noext."_thumb.jpg";
 		if (file_exists($iconpath)) {			
 			$icon2 = str_replace('file://', '', "$iconpath");			
 			$icon3 = str_replace('/var/www/html', '', "$icon2");
-			$videoicon = "<img src='media/file.jpg' class='zipicon' />";
+			$videoicon = "<img src='$icon' class='zipicon' />";
 		}
-		$videoicon = "<span class='zipicon'><img src='media/file.jpg' class='zipicon' />$link</span>";
+		for ($i = 0; $i < count($addticons); $i++) {
+			$new_name = preg_replace($linkpattern, '$1', $addticons[$i]);
+			//echo "$link_name.jpg"." ".$new_name."<br>";
+			if ($link_name == $new_name || "$link_name.jpg" == $new_name ) {
+				$icon = $addticons[$i];
+				//echo $new_name." ".$link_name."<br>";
+			}
+		}
+		$videoicon = "<span class='zipicon'><img src='$icon' class='zipicon' />$link</span>";
 
 		return $videoicon;
 	}
@@ -651,7 +738,7 @@ else{echo "\"false\"";}
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
-			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry", $imgpattern, $specialicons)."</a>";
+			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry", $imgpattern, $specialicons, $addticons, $exceptionicons)."</a>";
 		}
 	}
 ?>
@@ -704,9 +791,13 @@ else{echo "\"false\"";}
 	foreach ($filelist as $entry) {
 		if (preg_match($filepattern, $entry)) {
         	$basedir2 = str_replace('file://', '', $basedir);
-        	//$basedir2 = str_replace('/var/www/html', '', $basedir2);
-        	echo "<a href='$basedir2/$entry'>".fileicon("$entry", $filepattern)."</a>";
-        	//echo fileicon("$entry", $filepattern);
+        	$basedir2 = str_replace('/var/www/html', '', $basedir2);
+        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".fileicon("$entry", $filepattern, $addticons)."</a>";
+        }
+		else if (preg_match($filepattern2, $entry)) {
+        	$basedir2 = str_replace('file://', '', $basedir);
+        	$basedir2 = str_replace('/var/www/html', '', $basedir2);
+        	echo "<a href='$basedir2/$entry'>".fileicon("$entry", $filepattern, $addticons)."</a>";
 		}
 	}
 ?>
