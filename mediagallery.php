@@ -539,7 +539,7 @@
 		}
 		return $state;
 	}
-	function foldericon($link, $imgpattern, $specialicons, $addticons, $exceptionicons) {
+	function foldericon($link, $imgpattern, $specialicons, $addticons, $exceptionicons, $eipresent) {
 		/*
 			Try to find icon first in icon directory. Then with
 			any image in the folder.
@@ -657,7 +657,7 @@
 
 		return $videoicon;
 	}
-	function fileicon($link, $filepattern, $addticons) {
+	function fileicon($link, $filepattern, $addticons, $imgpattern, $exceptionicons, $eipresent) {
 		$videoicon = "<span class='zipicon'>$link</span>";
 		$link_noext = preg_replace($filepattern, '$1', $link);
 		$linkpattern = '/\/.*\/(.*)$/s';
@@ -675,8 +675,12 @@
 			$new_name = preg_replace($linkpattern, '$1', $addticons[$i]);
 			//echo "$link_name.jpg"." ".$new_name."<br>";
 			if ($link_name == $new_name || "$link_name.jpg" == $new_name ) {
-				$icon = $addticons[$i];
-				//echo $new_name." ".$link_name."<br>";
+				if ($eipresent == false || ($eipresent == true && !in_array($link, $exceptionicons))) {	
+					if (preg_match($imgpattern, $addticons[$i])) {				
+						$icon = $addticons[$i];
+						//echo $new_name." ".$link_name."<br>";
+					}
+				}
 			}
 		}
 		$videoicon = "<span class='zipicon'><img src='$icon' class='zipicon' />$link</span>";
@@ -738,7 +742,7 @@ else{echo "\"false\"";}
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
-			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry", $imgpattern, $specialicons, $addticons, $exceptionicons)."</a>";
+			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry", $imgpattern, $specialicons, $addticons, $exceptionicons, $eipresent)."</a>";
 		}
 	}
 ?>
@@ -792,12 +796,12 @@ else{echo "\"false\"";}
 		if (preg_match($filepattern, $entry)) {
         	$basedir2 = str_replace('file://', '', $basedir);
         	$basedir2 = str_replace('/var/www/html', '', $basedir2);
-        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".fileicon("$entry", $filepattern, $addticons)."</a>";
+        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".fileicon("$entry", $filepattern, $addticons, $imgpattern, $exceptionicons, $eipresent)."</a>";
         }
 		else if (preg_match($filepattern2, $entry)) {
         	$basedir2 = str_replace('file://', '', $basedir);
         	$basedir2 = str_replace('/var/www/html', '', $basedir2);
-        	echo "<a href='$basedir2/$entry'>".fileicon("$entry", $filepattern, $addticons)."</a>";
+        	echo "<a href='$basedir2/$entry'>".fileicon("$entry", $filepattern, $addticons, $imgpattern, $exceptionicons, $eipresent)."</a>";
 		}
 	}
 ?>
