@@ -76,6 +76,13 @@
 		font-family: arial;
 		border: 3px rgb(55,55,55) solid;
 	}
+	input[type=password] {
+		padding: 2px 4px;
+		background-color: rgb(25,25,25);
+		color: #3a4472;
+		font-size: 20px;
+		font-family: arial;
+	}
 	/* icon settings */
 	.icon {
 		position:relative;
@@ -271,6 +278,9 @@
 		background-color:rgba(0, 0, 0, 0.75);
 		padding:7px;
 	}
+	.menuitem {
+		display:hidden;
+	}
 	a { color: #3391ff; }
 </style>
 <script>
@@ -441,8 +451,9 @@
 		echo "
 		<form name='setcode' action='mediagallery.php' method='POST'>
 		<center>
-		<br><br><input textarea name='code' id='code' style='font-size:52px;background-color:black;color: #3a4472;'></input>
-		<input type='submit' value='go' style='font-size:49px' />
+		<br><center><font style='font-size:52px;background-color:black;color: #3a4472;'>Login</font></center><br><table><tr><td><font style='font-size:52px;background-color:black;color: #3a4472;'>Username:&nbsp;</font></td><td><input type='textarea' name='user' id='user' style='font-size:52px;background-color:black;color: #3a4472;'></input></td></tr><tr><td><br><br></td></tr>
+		<tr><td><font style='font-size:52px;background-color:black;color: #3a4472;'>Password:&nbsp; </font></td><td><input type='password' name='code' id='code' style='font-size:52px;background-color:black;color: #3a4472;'></input></td></tr></table>
+		<br><center><input type='submit' value='go' style='font-size:49px' /></center>
 		</center>
 		</form>";		
 		exit;
@@ -464,10 +475,10 @@
 	//$folderlink = preg_replace('(.*)$/', '/var/$1/', $folderlink);
 	//$folderlink = preg_replace('/(.*)$/', '$1/', $basedir);
 	// navigation bar
-	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon backbutton menuitem".menustate()."' /></a>";	
+	echo "<a href='javascript:subform(\"".$_SESSION['prevdir']."\")'><img src='media/back.jpg' class='navicon hiddenelement backbutton menuitem".menustate()."' /></a>";	
 	echo "<a href='javascript:subform(\"$updir\")'><img src='media/up.jpg' class='upbuttoncenter' /></a>";
-	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon homebutton menuitem".menustate()."' /></a>";
-	echo "<a href='$folderlink'><img src='media/folderlink.jpg' class='navicon folderlinkbutton menuitem".menustate()."' /></a>";
+	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon hiddenelement homebutton menuitem".menustate()."' /></a>";
+	echo "<a href='$folderlink'><img src='media/folderlink.jpg' class='navicon hiddenelement folderlinkbutton menuitem".menustate()."' /></a>";
 	// sort	
 	if ($handle = opendir($basedir)) {
 		while (false !== ($entry = readdir($handle))) {
@@ -515,7 +526,9 @@
 	    return $addticons;
 	}
 	 
-	$addticons = listDirectory($addticondir, $addticons);
+	if (file_exists($addticondir)) {
+		$addticons = listDirectory($addticondir, $addticons);
+	}
 
 	/*for ($i = 0; $i < count($addticons); $i++) {
 		echo $addticons[$i]."<br>";
@@ -690,13 +703,13 @@
 ?>
 <div class="clock" id='ct'>Clock</div>
 <input type="button" value="|&#8801;|" class="menubutton" id="menubutton" onclick="javascript:togglemenu()" />
-<input type="button" value=" x " class=<?php echo "\"closebutton menuitem".menustate()."\""; ?> onclick="javascript:closewindow()" />
-<input type="button" value="[_]" class=<?php echo "\"newtabbutton menuitem".menustate()."\""; ?> id="newtabbutton" onclick="javascript:newtab()" />
-<input type="button" value=" t " class=<?php echo "\"labelsbutton menuitem".menustate()."\""; ?> id="labelsbutton" onclick="javascript:togglelabels()" />
-<input type="button" value="[&#8801;]" class=<?php echo "\"statebutton menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
-<input type="button" value=" i " class=<?php echo "\"makeiconbutton menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
-<input type="button" value=" c " class=<?php echo "\"copyimgbutton menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgtoggle()" />
-<input type="button" value=" r " class=<?php echo "\"reloadbutton menuitem".menustate()."\""; ?> id="reloadbutton" onclick="javascript:reload()" />
+<input type="button" value=" x " class=<?php echo "\"closebutton hiddenelement menuitem".menustate()."\""; ?> onclick="javascript:closewindow()" />
+<input type="button" value="[_]" class=<?php echo "\"newtabbutton hiddenelement menuitem".menustate()."\""; ?> id="newtabbutton" onclick="javascript:newtab()" />
+<input type="button" value=" t " class=<?php echo "\"labelsbutton hiddenelement menuitem".menustate()."\""; ?> id="labelsbutton" onclick="javascript:togglelabels()" />
+<input type="button" value="[&#8801;]" class=<?php echo "\"statebutton hiddenelement menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
+<input type="button" value=" i " class=<?php echo "\"makeiconbutton hiddenelement menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
+<input type="button" value=" c " class=<?php echo "\"copyimgbutton hiddenelement menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgtoggle()" />
+<input type="button" value=" r " class=<?php echo "\"reloadbutton hiddenelement menuitem".menustate()."\""; ?> id="reloadbutton" onclick="javascript:reload()" />
 <form name='setlink' id='setlink' action='mediagallery.php' method = "POST" target="_self">
 <input type="hidden" name="basedir" id="basedir">
 <input type="hidden" name="prevdir" id="prevdir">
