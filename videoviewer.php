@@ -71,6 +71,18 @@
 		video.play();
 	}
 </script>
+<?php
+	$enable_redirect = false;
+	$video = str_replace('file://', '', $_REQUEST['video']);
+	$userpassaddrfile = "/general/software/general/access/userpassaddr.php";
+	$userpassaddr = "";
+	if (file_exists($userpassaddrfile)) {
+		$userpassaddr = file_get_contents($userpassaddrfile);
+	}
+	if ($enable_redirect) {
+		echo "<meta http-equiv = \"refresh\" content = \"0; url = $userpassaddr$video\" />";
+	}
+?>
 </head>
 <body>
 <center>

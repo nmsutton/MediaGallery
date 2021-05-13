@@ -575,6 +575,7 @@
 			}
 		    closedir($handle);
 		}
+		sort($iconlist);
 		if ($iconlist[0] != "") {
 			// icon folder found
 			//echo "1st option<br>";
@@ -602,6 +603,7 @@
 				}
 			    closedir($handle);
 			}
+			sort($piclist);
 			for ($i = 0; $i < count($addticons); $i++) {
 				$new_name = preg_replace($linkpattern, '$1', $addticons[$i]);
 				//echo "names: "."$link_name.jpg"." ".$new_name."<br>";
