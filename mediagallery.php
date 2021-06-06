@@ -27,6 +27,7 @@
 	$zippattern = '/.*[.](zip)+$/s';
 	$filepattern = '/.*[.](001|002|003|004|005|006|007|008)+$/s';
 	$filepattern2 = '/.*[.](009)+$/s';
+	//$filepattern2 = '/.*[.](001|002|003|004|005|006|007|008|009)+$/s';
 	$codedb = '';
 	$filelist = array();
 
@@ -39,6 +40,9 @@
 	if (isset($_REQUEST['prevdir'])) {
 		$_SESSION['prevdir'] = $_REQUEST['prevdir'];
 	}
+
+	//$ext_app_open=true;
+	$ext_app_open=false;
 ?>	
 <style>
 	body {
@@ -163,7 +167,7 @@
 		width: auto;  
 		height: 246px;
 		max-width: 600px;
-		min-width: 100px;
+		/*min-width: 150px;*/
 		background-color: black;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
@@ -280,6 +284,18 @@
 	}
 	.menuitem {
 		display:hidden;
+	}
+	.filenamearea {
+		position:relative;
+		background-color: black;
+		color: #3a4472;
+		font-size: 36px;
+		font-family: arial;
+		width:800px;
+		height:200px;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		border: 0px rgb(55,55,55) solid;
 	}
 	a { color: #3391ff; }
 </style>
@@ -431,9 +447,6 @@
 	display_c();
 	 }
 </script>
-<?php
-		copy('file:///var/www/html/general/medialink/medialink/0_Pornsites/AMKingdom/marianna/marianna_all_3/mar316VOO_209603039.jpg', 'file:///var/www/html/general/medialink/medialink/0_Pornsites/AMKingdom/marianna/mar316VOO_209603039.jpg');
-		?>
 </head>
 <body onload=display_ct();>
 <?php
@@ -712,48 +725,65 @@
 <input type="button" value=" i " class=<?php echo "\"makeiconbutton hiddenelement menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
 <input type="button" value=" c " class=<?php echo "\"copyimgbutton hiddenelement menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgtoggle()" />
 <input type="button" value=" r " class=<?php echo "\"reloadbutton hiddenelement menuitem".menustate()."\""; ?> id="reloadbutton" onclick="javascript:reload()" />
-<form name='setlink' id='setlink' action='mediagallery.php' method = "POST" target="_self">
-<input type="hidden" name="basedir" id="basedir">
-<input type="hidden" name="prevdir" id="prevdir">
-<input type="hidden" name="newtab" id="newtab" value=
+
 <?php
-if (isset($_REQUEST['newtab'])) {echo "\"".$_REQUEST['newtab']."\"";}
-else{echo "\"false\"";}
-?> 
->
-<input type="hidden" name="labelvisibility" id="labelvisibility" value=
-<?php
-if (isset($_REQUEST['labelvisibility'])) {echo "\"".$_REQUEST['labelvisibility']."\"";}
-else{echo "\"false\"";}
-?> 
->
-<input type="hidden" name="menustate" id="menustate" value=
-<?php
-if (isset($_REQUEST['menustate'])) {echo "\"".$_REQUEST['menustate']."\"";}
-else{echo "\"false\"";}
-?> 
->
-<input type="hidden" name="makeicon" id="makeicon" value="false">
-<input type="hidden" name="copyimg" id="copyimg" value="false">
+function create_form() {
+/* start of form */
+echo "<form name='setlink' id='setlink' action='mediagallery.php' method = 'POST' target='_self'>
+<input type='hidden' name='basedir' id='basedir'>
+<input type='hidden' name='prevdir' id='prevdir'>
+<input type='hidden' name='newtab' id='newtab' value=";
+
+if (isset($_REQUEST['newtab'])) {echo '"'.$_REQUEST['newtab'].'"';}
+else{echo '"false"';}
+
+echo ">
+<input type='hidden' name='labelvisibility' id='labelvisibility' value=";
+
+if (isset($_REQUEST['labelvisibility'])) {echo '"'.$_REQUEST['labelvisibility'].'"';}
+else{echo '"false"';}
+
+echo ">
+<input type='hidden' name='menustate' id='menustate' value=";
+
+if (isset($_REQUEST['menustate'])) {echo '"'.$_REQUEST['menustate'].'"';}
+else{echo '"false"';}
+
+echo ">
+<input type='hidden' name='makeicon' id='makeicon' value='false'>
+<input type='hidden' name='copyimg' id='copyimg' value='false'>";
+
+if (isset($_REQUEST['newtab'])) {
+	$ntval = $_REQUEST['newtab'];
+	if ($ntval == 'true') {
+		echo '<script>
+		document.getElementById(\'setlink\').target = \'_blank\';	
+		document.getElementById(\'newtabbutton\').value = \'[x]\';
+		</script>';
+	}
+	else if ($ntval == 'false') {
+		echo '<script>
+		document.getElementById(\'setlink\').target = \'_self\';	
+		document.getElementById(\'newtabbutton\').value = \'[_]\';
+		</script>';
+	}
+}
+
+echo "<input type='hidden' name='image' id='image'>
+<input type='hidden' name='basedirimg' id='basedirimg'>
+<input type='hidden' name='video' id='video'>
+<input type='hidden' name='basedirvid' id='basedirvid'>";
+}
+?>
+
 <?php 
-	if (isset($_REQUEST['newtab'])) {
-		$ntval = $_REQUEST['newtab'];
-		if ($ntval == "true") {
-			echo "<script>
-			document.getElementById('setlink').target = '_blank';	
-			document.getElementById('newtabbutton').value = '[x]';
-			</script>";
-		}
-		else if ($ntval == "false") {
-			echo "<script>
-			document.getElementById('setlink').target = '_self';	
-			document.getElementById('newtabbutton').value = '[_]';
-			</script>";
-		}
+	if ($ext_app_open == false) {
+		create_form(); 
 	}
 ?>
-<!-- directories -->
+
 <center>
+<!-- directories -->
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
@@ -761,30 +791,33 @@ else{echo "\"false\"";}
 		}
 	}
 ?>
-<!--/form-->
 <!-- images -->
-<!--form name='setimg' action='imageviewer.php' method = "POST" target="_blank"-->
-<input type="hidden" name="image" id="image">
-<input type="hidden" name="basedirimg" id="basedirimg">
 <?php
 	foreach ($filelist as $entry) {
 		if (preg_match($imgpattern, $entry)) {
 			$basedir2 = str_replace('/var/www/html', '', $basedir);
 			$image = str_replace('file://', '', "$basedir2/$entry");
-            echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'><img src='$image' class='icon' /></a>";
+            if ($ext_app_open == false) {
+            	echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'><img src='$image' class='icon' /></a>";
+            }
+            else {
+            	echo "<a href='$image'><img src='$image' class='icon' /></a>";
+            }
 		}
 	}
 ?>
-<!--/form-->
 <!-- videos -->
-<!--form name='setvid' action='videoviewer.php' method = "POST" target="_blank"-->
-<input type="hidden" name="video" id="video">
-<input type="hidden" name="basedirvid" id="basedirvid">
 <?php
 	foreach ($filelist as $entry) {
 		if (preg_match($vidpattern, $entry)) {
         	$basedir2 = str_replace('/var/www/html', '', $basedir);
-        	echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $vidpattern2)."</a>";
+        	if ($ext_app_open == false) {
+        		echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $vidpattern2)."</a>";
+        	}
+        	else {
+        		$video = str_replace('file://', '', "$basedir2/$entry");
+        		echo "<a href='$video'>".videoicon("$entry", $vidpattern2)."</a>";
+        	}
         	//$basedir2 = str_replace('file://', 'http://localhost', $basedir2);
         	//echo "<a href='$basedir2/$entry'>".videoicon("$entry", $vidpattern2)."</a>";
 		}
@@ -793,6 +826,13 @@ else{echo "\"false\"";}
 		echo "<script>shiftlabels();</script>";
 	}
 ?>
+
+<?php 
+	if ($ext_app_open == true) {
+		create_form(); 
+	}
+?>
+
 <!-- zip files -->
 <input type="hidden" name="zipfile" id="zipfile">
 <?php
@@ -820,6 +860,16 @@ else{echo "\"false\"";}
 		}
 	}
 ?>
-</form>
 </center>
 </form>
+<?php
+	/*$video = "http://localhost/general/medialink/medialink/0_Pornsites/TeamSkeet/riley_reid/povlife_riley_reed_full_hi.mp4";
+	//echo '<form name="setlink" id="setlink" action="mediagallery.php" method="POST" target="_self">';
+	echo "<br><br><center><div class='filenamearea'><a href='$video' style='text-decoration:none'>$entry</a></div></center>";
+	echo '<form name="setlink" id="setlink" action="mediagallery.php" method="POST" target="_self">';
+    echo "<br><br><center><div class='filenamearea'><a href='$video' style='text-decoration:none'>$entry</a></div></center>";
+    echo '</form>';
+    echo '<form action="mediagallery.php" method="POST" target="_self">';
+    echo "<br><br><center><div class='filenamearea'><a href='$video' style='text-decoration:none'>$entry</a></div></center>";
+    echo '</form>';*/
+?>
