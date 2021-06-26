@@ -41,8 +41,19 @@
 		$_SESSION['prevdir'] = $_REQUEST['prevdir'];
 	}
 
-	//$ext_app_open=true;
-	$ext_app_open=false;
+	$ext_app_open="true";
+	//$ext_app_open=false;
+	if (isset($_REQUEST['ext_app_open'])) {
+		$ext_app_open = $_REQUEST['ext_app_open'];
+	}
+	/*if (isset($_REQUEST['copyimg'])) {
+		if ($_REQUEST['copyimg']=="true") {
+			$ext_app_open="false";
+		}
+		if ($_REQUEST['copyimg']=="false") {
+			$ext_app_open="true";
+		}
+	}*/
 ?>	
 <style>
 	body {
@@ -244,6 +255,9 @@
 	.copyimgbutton {
 		position:absolute;position:fixed;top:60%;right:10%;font-size:36px;opacity:0.95;z-index:10;
 	}
+	.extappbutton {
+		position:absolute;position:fixed;top:60%;right:20%;font-size:36px;opacity:0.95;z-index:10;
+	}
 	.reloadbutton {
 		position:absolute;position:fixed;bottom:0%;right:10%;font-size:36px;opacity:0.95;z-index:10;
 	}
@@ -406,12 +420,41 @@
 		if (document.getElementById("copyimg").value == "true") {
 			document.getElementById("copyimg").value = "false";
 			document.getElementById("copyimgbutton").value = " c ";
+			document.getElementById("ext_app_open").value = "false";
 		}
 		else {
 			document.getElementById("copyimg").value = "true";
 			document.getElementById("copyimgbutton").value = "[c]";
+			document.getElementById("ext_app_open").value = "true";
 		}
 		togglemenu();
+		//reload(); TODO: sub form
+		<?php 
+			$org_cur_fold = "\"".$_SESSION['folderlink']."\"";
+			$mod_cur_fold = preg_replace('localhost', '/file\:\/\/', $org_cur_fold);
+
+			if (isset($_REQUEST["basedir"])) {
+				$basedir = $_REQUEST["basedir"];
+			}
+			else {
+				$basedir = $origdir;
+			}
+		?>
+		//document.write(<?php echo "\"".$mod_cur_fold."\"" ?>);
+		//document.write(<?php echo "\"".$basedir."\"" ?>);
+		//subform(<?php echo "\"".$basedir."\"" ?>);
+		//subform("file:///var/www/html/general/medialink/medialink/0_Pornsites/NewSensations");
+	}
+	function extapptoggle() {
+		if (document.getElementById("ext_app_open").value == "true") {
+			document.getElementById("ext_app_open").value = "false";
+			document.getElementById("extappbutton").value = " e ";
+		}
+		else {
+			document.getElementById("ext_app_open").value = "true";
+			document.getElementById("extappbutton").value = "[e]";
+		}
+		subform(<?php echo "\"".$basedir."\"" ?>);
 	}
 	function reload() {
 		location.reload();
@@ -485,6 +528,7 @@
 		$updir = $origdir;
 	}
 	$folderlink = preg_replace('/file\:\/\/(.*)$/', '$1/', $basedir);
+	$_SESSION['folderlink'] = $folderlink;
 	//$folderlink = preg_replace('(.*)$/', '/var/$1/', $folderlink);
 	//$folderlink = preg_replace('/(.*)$/', '$1/', $basedir);
 	// navigation bar
@@ -723,7 +767,22 @@
 <input type="button" value=" t " class=<?php echo "\"labelsbutton hiddenelement menuitem".menustate()."\""; ?> id="labelsbutton" onclick="javascript:togglelabels()" />
 <input type="button" value="[&#8801;]" class=<?php echo "\"statebutton hiddenelement menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
 <input type="button" value=" i " class=<?php echo "\"makeiconbutton hiddenelement menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
-<input type="button" value=" c " class=<?php echo "\"copyimgbutton hiddenelement menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgtoggle()" />
+<input type="button" value=<?php 
+if ($_REQUEST['copyimg']=="true") {
+echo "\"[c]\"";
+}
+else {
+echo "\" c \"";	
+}
+?> class=<?php echo "\"copyimgbutton hiddenelement menuitem".menustate()."\""; ?> id="copyimgbutton" onclick="javascript:copyimgtoggle()" />
+<input type="button" value=<?php 
+if ($ext_app_open=="true") {
+echo "\"[e]\"";
+}
+else {
+echo "\" e \"";	
+}
+?> class=<?php echo "\"extappbutton hiddenelement menuitem".menustate()."\""; ?> id="extappbutton" onclick="javascript:extapptoggle()" />
 <input type="button" value=" r " class=<?php echo "\"reloadbutton hiddenelement menuitem".menustate()."\""; ?> id="reloadbutton" onclick="javascript:reload()" />
 
 <?php
@@ -751,7 +810,14 @@ else{echo '"false"';}
 
 echo ">
 <input type='hidden' name='makeicon' id='makeicon' value='false'>
-<input type='hidden' name='copyimg' id='copyimg' value='false'>";
+<input type='hidden' name='copyimg' id='copyimg' value='";
+if (isset($_REQUEST['copyimg']) && $_REQUEST['copyimg']=="true") {
+	echo "true";
+}
+else {
+	echo "false";
+}
+echo "'>";
 
 if (isset($_REQUEST['newtab'])) {
 	$ntval = $_REQUEST['newtab'];
@@ -773,11 +839,21 @@ echo "<input type='hidden' name='image' id='image'>
 <input type='hidden' name='basedirimg' id='basedirimg'>
 <input type='hidden' name='video' id='video'>
 <input type='hidden' name='basedirvid' id='basedirvid'>";
+
+$ext_app_open="true";
+//$ext_app_open=false;
+if (isset($_REQUEST['ext_app_open'])) {
+	$ext_app_open = $_REQUEST['ext_app_open'];
+}
+
+// create ext_app_open variable
+echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_app_open."' />";
+
 }
 ?>
 
 <?php 
-	if ($ext_app_open == false) {
+	if ($ext_app_open == "false") {
 		create_form(); 
 	}
 ?>
@@ -797,7 +873,7 @@ echo "<input type='hidden' name='image' id='image'>
 		if (preg_match($imgpattern, $entry)) {
 			$basedir2 = str_replace('/var/www/html', '', $basedir);
 			$image = str_replace('file://', '', "$basedir2/$entry");
-            if ($ext_app_open == false) {
+            if ($ext_app_open == "false") {
             	echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'><img src='$image' class='icon' /></a>";
             }
             else {
@@ -811,7 +887,7 @@ echo "<input type='hidden' name='image' id='image'>
 	foreach ($filelist as $entry) {
 		if (preg_match($vidpattern, $entry)) {
         	$basedir2 = str_replace('/var/www/html', '', $basedir);
-        	if ($ext_app_open == false) {
+        	if ($ext_app_open == "false") {
         		echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $vidpattern2)."</a>";
         	}
         	else {
@@ -828,7 +904,7 @@ echo "<input type='hidden' name='image' id='image'>
 ?>
 
 <?php 
-	if ($ext_app_open == true) {
+	if ($ext_app_open == "true") {
 		create_form(); 
 	}
 ?>
