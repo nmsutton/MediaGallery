@@ -37,7 +37,10 @@
 	if (isset($_REQUEST['basedir'])) {
 		$_SESSION['basedir'] = $_REQUEST['basedir'];
 		$fdrpattern = '/file:\/.*\/(.*)\/(.*)\/(.*)$/s';
-		$title = preg_replace($fdrpattern, '$3_$2_$1', $_REQUEST['basedir']);
+		$title = preg_replace($fdrpattern, '$3 ~ $2 ~ $1', $_REQUEST['basedir']);
+		$title = str_replace("_", " ", $title);
+		$title = ucwords($title, " ");
+		$title = ucwords($title, "~");
 		echo "<title>".$title."</title>";
 	}
 	if (isset($_REQUEST['prevdir'])) {
