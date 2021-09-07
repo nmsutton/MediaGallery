@@ -21,9 +21,9 @@
 	$exceptioniconsfile = '/var/www/html/general/medialink/exception_icons.php';
 	$addticondir = '/var/www/html/general/medialink/medialink3';  
 	$extpattern = '/.*[.][a-zA-Z0-9]+$/s';
-	$imgpattern = '/.*[.](jpg|png|gif|jpeg|tif|webp)+$/s';
-	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
-	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v)+$/s';
+	$imgpattern = '/.*[.](jpg|JPG|png|gif|jpeg|tif|webp)+$/s';
+	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v|m4v)+$/s';
+	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v|m4v)+$/s';
 	$zippattern = '/.*[.](zip)+$/s';
 	$filepattern = '/.*[.](001|002|003|004|005|006|007|008)+$/s';
 	$filepattern2 = '/.*[.](009)+$/s';
@@ -36,6 +36,9 @@
 
 	if (isset($_REQUEST['basedir'])) {
 		$_SESSION['basedir'] = $_REQUEST['basedir'];
+		$fdrpattern = '/file:\/.*\/(.*)$/s';
+		$title = preg_replace($fdrpattern, '$1', $_REQUEST['basedir']);
+		echo "<title>".$title."</title>";
 	}
 	if (isset($_REQUEST['prevdir'])) {
 		$_SESSION['prevdir'] = $_REQUEST['prevdir'];
@@ -258,6 +261,9 @@
 	.extappbutton {
 		position:absolute;position:fixed;top:60%;right:20%;font-size:36px;opacity:0.95;z-index:10;
 	}
+	.fullscreenbutton {
+		position:absolute;position:fixed;top:40%;right:20%;font-size:36px;opacity:0.95;z-index:10;
+	}
 	.reloadbutton {
 		position:absolute;position:fixed;bottom:0%;right:10%;font-size:36px;opacity:0.95;z-index:10;
 	}
@@ -474,6 +480,42 @@
 			}
 		}
 	}
+	var db, isfullscreen = false;
+	function fullscreentoggle() {
+        /*var win = window.open("", "full", "dependent=yes, fullscreen=yes");
+        win.location = window.location.href;
+        window.opener = null;*/
+        db = document.body;
+		if(isfullscreen == false){
+			if(db.requestFullScreen){
+			    db.requestFullScreen();
+			} else if(db.webkitRequestFullscreen){
+			    db.webkitRequestFullscreen();
+			} else if(db.mozRequestFullScreen){
+			    db.mozRequestFullScreen();
+			} else if(db.msRequestFullscreen){
+			    db.msRequestFullscreen();
+			}
+			isfullscreen = true;
+			//wrap.style.width = window.screen.width+"px";
+			//wrap.style.height = window.screen.height+"px";
+		} else {
+			if(document.cancelFullScreen){
+			    document.cancelFullScreen();
+			} else if(document.exitFullScreen){
+			    document.exitFullScreen();
+			} else if(document.mozCancelFullScreen){
+			    document.mozCancelFullScreen();
+			} else if(document.webkitCancelFullScreen){
+			    document.webkitCancelFullScreen();
+			} else if(document.msExitFullscreen){
+			    document.msExitFullscreen();
+			}
+			isfullscreen = false;
+			wrap.style.width = "100%";
+			wrap.style.height = "auto";
+		}
+    }
 </script>
 <script type="text/javascript"> 
 	function hours12(date) { return (date.getHours() + 24) % 12 || 12; }
@@ -783,6 +825,14 @@ else {
 echo "\" e \"";	
 }
 ?> class=<?php echo "\"extappbutton hiddenelement menuitem".menustate()."\""; ?> id="extappbutton" onclick="javascript:extapptoggle()" />
+<input type="button" value=<?php 
+if ($fullscreen=="true") {
+echo "\"[f]\"";
+}
+else {
+echo "\" f \"";	
+}
+?> class=<?php echo "\"fullscreenbutton hiddenelement menuitem".menustate()."\""; ?> id="fullscreenbutton" onclick="javascript:fullscreentoggle()" />
 <input type="button" value=" r " class=<?php echo "\"reloadbutton hiddenelement menuitem".menustate()."\""; ?> id="reloadbutton" onclick="javascript:reload()" />
 
 <?php
