@@ -928,6 +928,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 			$image = str_replace('file://', '', "$basedir2/$entry");
             if ($ext_app_open == "false") {
             	echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'><img src='$image' class='icon' /></a>";
+            	echo "<input type=\"hidden\" name=\"imagelist[]\" value=\"".$image."\"/>";
             }
             else {
             	echo "<a href='$image'><img src='$image' class='icon' /></a>";

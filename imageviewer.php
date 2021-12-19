@@ -68,9 +68,30 @@
 	.zoomout {
 		position:absolute;position:fixed;top:40%;right:0px;font-size:36px;
 	}	
+	.nextimg {
+		position:absolute;position:fixed;top:55%;left:0px;font-size:36px;
+	}	
+	.previmg {
+		position:absolute;position:fixed;top:40%;left:0px;font-size:36px;
+	}		
 	.linkpos {
 		position:absolute;position:fixed;top:60%;right:3%;font-size:36px;
 		width:10%;height:15%;
+	}
+	.menushow2 {
+		position:absolute;position:fixed;top:80%;right:0px;font-size:36px;
+	}
+	.menushow {
+		position:absolute;position:fixed;top:90%;right:0px;font-size:36px;
+	}		
+	.hiddenelement {
+		display: none;
+	}
+	.menuitem {
+		/*display: none;*/
+	}
+	.menuitem2 {
+		/*display: visible;*/
 	}
 </style>
 <script>
@@ -137,6 +158,26 @@
 			document.getElementById("image").classList.add('responsive-image');
 		}			
 	}	
+	function viewimg(link) {
+		document.getElementById("image").value = link;
+		document.forms["setlink"].action = "imageviewer.php";
+		document.forms["setlink"].target = "_self";
+		document.forms["setlink"].submit();
+	}
+	function togglemenu() {
+		var labels = document.getElementsByClassName("menuitem");
+		for(var i = 0; i < labels.length; i++)
+		{
+		    labels[i].classList.toggle('hiddenelement');
+		}		
+	}
+	function togglemenu2() {
+		var labels = document.getElementsByClassName("menuitem2");
+		for(var i = 0; i < labels.length; i++)
+		{
+		    labels[i].classList.toggle('hiddenelement');
+		}		
+	}
 </script>
 </head>
 <body>
@@ -148,12 +189,18 @@
 	$targetfldr = "";
 	$icondir = "/icon/";
 	$html_root = "/var/www/html";
+	/*if (isset($_REQUEST['menustate'])) {
+		$_REQUEST['menustate'] = "false";
+	}
+	else {
+		$_REQUEST['menustate'] = "false";
+	}*/
 	if (isset($_REQUEST['image'])) {
 		$image = str_replace('file://', '', $_REQUEST['image']);
 		$image_copy = $html_root.$image;
 		$imagename = basename($image);
 		$targetpath = str_replace('file://', '', $_REQUEST['basedirimg'].$icondir.$imagename);
-		$targetfldr = str_replace('file://', '', dirname($_REQUEST['basedirimg'])."/".$imagename);
+		$targetfldr = str_replace('file://', '', dirname($_REQUEST['basedirimg'])."/".$imagename);	
 	}
 	if (isset($_REQUEST['makeicon'])) {
 		if ($_REQUEST['makeicon'] == "true") {			
@@ -175,17 +222,76 @@
 			echo "<script>window.close();</script>";
 		}
 	}
+	function menustate() {
+		$state = "";
+		if (isset($_REQUEST['menustate'])) {
+			if ($_REQUEST['menustate']=='true') {
+				$state = " hiddenelement";
+			}
+		}
+		else {
+			$state = " hiddenelement";
+		}
+		return $state;
+	}
+	function menustate2() {
+		$state = "";
+		if (isset($_REQUEST['menustate2'])) {
+			if ($_REQUEST['menustate2']=='true') {
+				//$state = " hiddenelement";
+			}
+		}
+		else {
+			//$state = " hiddenelement";
+		}
+		return $state;
+	}
 	
-	echo "<img src='$image' id='image' class='responsive-image'>";
+echo "<img src='$image' id='imagedisplay' class='responsive-image'>";
+
+echo "<form name='setlink' id='setlink' action='imageviewer.php' method = 'POST' target='_self'>
+<input type='hidden' name='image' id='image' value='".$image."'>
+<input type='hidden' name='basedirimg' id='basedirimg' value='".$_REQUEST['basedirimg']."'>";
+
+echo "<input type='hidden' name='menustate' id='menustate' value=";
+if (isset($_REQUEST['menustate'])) {echo '"'.$_REQUEST['menustate'].'"';}
+else{echo '"true"';}
+echo ">";
+echo "<input type='hidden' name='menustate2' id='menustate2' value=";
+if (isset($_REQUEST['menustate2'])) {echo '"'.$_REQUEST['menustate2'].'"';}
+else{echo '"false"';}
+echo ">";
+
+$imagelist = $_REQUEST['imagelist'];
+foreach ($imagelist as $entry) {
+	echo "<input type=\"hidden\" name=\"imagelist[]\" value=\"".$entry."\"/>";
+}
+$imgindex = array_search($image, $imagelist);
+$images_count = count($imagelist);
+$nextimg = $imagelist[($imgindex+1)];
+$previmg = $imagelist[($imgindex-1)];
+// wrap around
+if (($imgindex+1) > ($images_count-1)) {
+	$nextimg = $imagelist[0];
+}
+if (($imgindex-1) < 0) {
+	$previmg = $imagelist[($images_count-1)];
+}
+
+echo "</form>";
 ?>
 </center>
 <form name='setdir' action='mediagallery.php' method = "POST">
 <!-- input type="submit" value="back" style="position:absolute;top:0px;left:0px;font-size:28px" /-->
 <input type="hidden" name="basedir" id="basedir" value=<?php echo "'".$_REQUEST['basedirimg']."'" ?>>
 </form>
-<input type="button" value=" x " class="closebutton" onclick="javascript:closewindow()" />
-<input type="button" value=" + " class="zoomin" onclick="javascript:zoomin()" />
-<input type="button" value=" - " class="zoomout" onclick="javascript:zoomout()" />
-<a href="<?php echo $image ?>"><img class="linkpos" src="media/folderlink.jpg"></a>
+<input type="button" value=" x " class="closebutton menuitem2 <?php echo menustate2() ?>" onclick="javascript:closewindow()" />
+<input type="button" value=" + " class="zoomin hiddenelement menuitem <?php echo menustate() ?>" onclick="javascript:zoomin()" />
+<input type="button" value=" - " class="zoomout hiddenelement menuitem <?php echo menustate() ?>" onclick="javascript:zoomout()" />
+<input type="button" value=" > " class="nextimg menuitem2 <?php echo menustate2() ?>" onclick="javascript:viewimg('<?php echo $nextimg ?>')" />
+<input type="button" value=" < " class="previmg menuitem2 <?php echo menustate2() ?>" onclick="javascript:viewimg('<?php echo $previmg ?>')" />
+<input type="button" value="[=]" class="menushow2 hiddenelement menuitem <?php echo menustate() ?>" onclick="javascript:togglemenu2()" />
+<input type="button" value="[=]" class="menushow" onclick="javascript:togglemenu()" />
+<a href="<?php echo $image ?>"><img class="linkpos hiddenelement menuitem <?php echo menustate() ?>" src="media/folderlink.jpg"></a>
 </body>
 </html>
