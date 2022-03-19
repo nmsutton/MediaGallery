@@ -24,6 +24,7 @@
 	$imgpattern = '/.*[.](jpg|JPG|png|gif|jpeg|tif|webp)+$/s';
 	$vidpattern = '/.*[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v|m4v)+$/s';
 	$vidpattern2 = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v|m4v)+$/s';
+	$filepathpattern = '/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v|m4v)+$/s';//'/(.*)\/.*$/s';
 	$zippattern = '/.*[.](zip)+$/s';
 	$filepattern = '/.*[.](001|002|003|004|005|006|007|008)+$/s';
 	$filepattern2 = '/.*[.](009)+$/s';
@@ -582,7 +583,17 @@
 	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon hiddenelement homebutton menuitem".menustate()."' /></a>";
 	echo "<a href='$folderlink'><img src='media/folderlink.jpg' class='navicon hiddenelement folderlinkbutton menuitem".menustate()."' /></a>";
 	// sort	
-	if ($handle = opendir($basedir)) {
+	if (isset($_REQUEST['tags_query'])) {
+		$sql = "SELECT url FROM tags WHERE tag='".$_REQUEST['tags_query']."';";
+    	$result = $conn->query($sql);
+
+	    if ($result->num_rows > 0) { 
+	      while($row = $result->fetch_assoc()) {
+	        array_push($filelist, $row['url']);
+	      }
+	    }
+	}
+	else if ($handle = opendir($basedir)) {
 		while (false !== ($entry = readdir($handle))) {
 			if ($entry != "." && $entry != "..") {
 				array_push($filelist, $entry);
@@ -661,7 +672,26 @@
 		*/
 		$foldericon = "<span class='foldercontainernoicon genlabel'><img src='media/folder.jpg' class='foldericongeneric' /><span class='labelareanonhidden'><br>".substr($link, 0, 10)."</span></span>";
 		$icondir = $_SESSION['basedir']."/"."$link/icon/";
+		if (isset($_REQUEST['tags_query'])) {
+			//$filepath = preg_replace('/(.*)/s', ' file:///var/www/html/general/medialink/medialink/$1', $link);
+			//$filepath = preg_replace('/(.*)/s', '$1', $link);
+			$filepath = "file:///var/www/html/general/medialink/medialink/".$link;
+			//$filepath = str_replace('%20', ' ', "$filepath");
+			//$filepath = "file:///var/www/html/general/medialink/medialink/".$filepath;
+			$icondir = $filepath."/icon/";
+			//echo $icondir."test";
+		}
+		//echo $icondir;
 		$picdir = $_SESSION['basedir']."/"."$link/";
+		if (isset($_REQUEST['tags_query'])) {
+			//$filepath = preg_replace('/(.*)/s', ' file:///var/www/html/general/medialink/medialink/$1', $link);
+			//$filepath = preg_replace('/(.*)/s', 'file:///var/www/html/general/medialink/medialink/$1/test', $link);
+			$filepath = "file:///var/www/html/general/medialink/medialink/".$link;
+			//$filepath = str_replace('%20', ' ', "$filepath");
+			$picdir = $filepath;
+			//echo $icondir."test";
+		}
+		//echo $picdir;
 		$linkpattern = '/\/.*\/(.*)$/s';
 		$link_name = preg_replace($linkpattern, '$1', $link);
 		$sipresent = false;
@@ -748,11 +778,26 @@
 	function videoicon($link, $vidpattern2) {
 		$videoicon = "<span class='videoicon'>$link</span>";
 		$link_noext = preg_replace($vidpattern2, '$1', $link);
+		if (isset($_REQUEST['tags_query'])) {
+			$link_noext = preg_replace('/.*\\/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v|m4v)+$/s', '$1', $link);
+		}
 
 		$icondir = $_SESSION['basedir']."/icon/videos/";
+		if (isset($_REQUEST['tags_query'])) {
+			$filepath = preg_replace('/(.*)\\/.*$/s', ' file:///var/www/html/general/medialink/medialink/$1', $link);
+			$filepath = str_replace('%20', ' ', "$filepath");
+			$icondir = $filepath."/icon/videos/";
+			//echo $icondir;
+		}
+		//echo $icondir;
 		$iconpath = $icondir.$link_noext."_thumb.jpg";
 		if (file_exists($iconpath)) {			
 			$icon2 = str_replace('file://', '', "$iconpath");			
+			$icon3 = str_replace('/var/www/html', '', "$icon2");
+			$videoicon = "<img src='$icon3' class='videoicon' />";
+		}
+		else if (isset($_REQUEST['tags_query'])) {
+			$icon2 = str_replace('file://', '', "$iconpath");
 			$icon3 = str_replace('/var/www/html', '', "$icon2");
 			$videoicon = "<img src='$icon3' class='videoicon' />";
 		}
@@ -912,11 +957,16 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 ?>
 
 <center>
+<?php
+	if (isset($_REQUEST['tags_query'])) {
+		echo "Tags: ".$_REQUEST['tags_query']."<br>";
+	}
+?>
 <!-- directories -->
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
-			echo "<a href='javascript:subform(\"$basedir/$entry\")'>".foldericon("$entry", $imgpattern, $specialicons, $addticons, $exceptionicons, $eipresent)."</a>";
+			echo "<a href=\"javascript:subform('$basedir/$entry')\">".foldericon("$entry", $imgpattern, $specialicons, $addticons, $exceptionicons, $eipresent)."</a>";
 		}
 	}
 ?>
