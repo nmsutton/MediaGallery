@@ -988,7 +988,9 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 <?php
 	foreach ($filelist as $entry) {
 		if (preg_match('/.*tags\.url/s', $entry)) {
-			echo "<script>window.location = 'http://localhost/general/medialink/tags_collection.php';</script>";
+			echo "<script>window.open(
+              'http://localhost/general/medialink/tags_collection.php', '_blank');</script>";
+            echo "<script>window.location = 'http://localhost/general/mediagallery/mediagallery.php';</script>";
 		}
 	}		
 ?>
