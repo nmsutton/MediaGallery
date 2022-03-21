@@ -46,6 +46,10 @@
     }
 </style>
 <script>
+    function set_tag(tag_name) {
+        document.getElementById('new_tag').value = tag_name;
+        document.getElementById('set_tags').submit();
+    }
     function set_del(tag_name) {
         document.getElementById('del_tag').value = tag_name;
         document.getElementById('set_tags').submit();
@@ -60,39 +64,68 @@
         $url = $_REQUEST['url'];
         $url = str_replace('javascript:subform("', '', "$url");
         $url = str_replace('")', '', "$url");
+        $url = str_replace('/var/www/html/general/medialink/medialink/', '', "$url");
         $url = str_replace('http://localhost/general/medialink/medialink/', '', "$url");
         $url = str_replace('file:///var/www/html/general/medialink/medialink/', '', "$url");
         $url = str_replace('/general/medialink/medialink/', '', "$url");
     }
 ?>
-<center>Url: <input type='textarea' name='url' id='url' style='font-size:20px;background-color:black;color: #3a4472;' value='<?php echo $url ?>'></input><br>Tags: 
+<center>Url: <input type='textarea' name='url' id='url' style='font-size:20px;background-color:black;color: #3a4472;width:1400px' value='<?php echo $url ?>'></input><br>Tags: 
 <?php
     if (isset($_REQUEST['new_tag']) && $_REQUEST['new_tag'] != '' && $url != '') {
+        $tag = $_REQUEST['new_tag'];
         $url_mod = str_replace('http://localhost/general/medialink/medialink/', '', "$url");
-        $sql = "INSERT INTO `mediagallery`.`tags` (`url`, `tag`) VALUES ('$url_mod', '".$_REQUEST['new_tag']."');";
+
+        $sql = "CREATE TABLE `mediagallery`.`$tag` (`id` INT NOT NULL AUTO_INCREMENT,
+        `url` VARCHAR(500) NULL, PRIMARY KEY (`id`));";
+        $result = $conn->query($sql);
+
+        $sql = "INSERT INTO `mediagallery`.`$tag` (`url`) VALUES ('$url_mod');";
         $result = $conn->query($sql);
     }
 
     if (isset($_REQUEST['del_tag']) && $_REQUEST['del_tag'] != '' && $url != '') {
-        $sql = "DELETE FROM `mediagallery`.`tags` WHERE (`url` = '$url') AND (`tag` = '".$_REQUEST['del_tag']."');";
+        $tag = $_REQUEST['del_tag'];
+        $sql = "DELETE FROM `mediagallery`.`$tag` WHERE (`url` = '$url');";
         $result = $conn->query($sql);
     }
 
-    $sql = "SELECT tag FROM tags WHERE url='$url';";
+    $sql = "SHOW TABLES;";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) { 
-      while($row = $result->fetch_assoc()) {
-        $current_tag = $row['tag'];
-        echo "&nbsp;".$current_tag;
-        echo " <a href=\"javascript:set_del('".$current_tag."')\">[X]</a>";
-      }
-    }
+        while($row = $result->fetch_assoc()) {
+            $table = $row['Tables_in_mediagallery'];
+            $sql2 = "SELECT * FROM ".$table." WHERE url='$url'";
+            $result2 = $conn->query($sql2);
+
+            if ($result2->num_rows > 0) { 
+                while($row2 = $result2->fetch_assoc()) {        
+                    echo "&nbsp;".$table;
+                    echo " <a href=\"javascript:set_del('".$table."')\">[X]</a>";
+                }
+            }
+        }
+    }    
 ?>
 <br>
 New tag: <input type='textarea' name='new_tag' id='new_tag' style='font-size:20px;background-color:black;color: #3a4472;'></input>
 <br>
-<input type='hidden' name='del_tag' id='del_tag' /></center>
-<br><center><input type='submit' value='submit' style='font-size:20px' /></center>
+<input type='hidden' name='del_tag' id='del_tag' />
+<br><input type='submit' value='submit' style='font-size:20px' /><br><br>
+<?php
+    $sql = "SHOW TABLES;";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) { 
+      while($row = $result->fetch_assoc()) {
+        $current_tag = $row['Tables_in_mediagallery'];
+        if ($current_tag != "access" && $current_tag != "tags") {
+            echo " <a href=\"javascript:set_tag('".$current_tag."')\">$current_tag</a>";
+        }
+      }
+    }  
+?>
+</center>
 </form>
 </body>

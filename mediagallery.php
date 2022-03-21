@@ -520,6 +520,9 @@
 			wrap.style.height = "auto";
 		}
     }
+    function sub_form(query) {
+      document.forms["setlink"].submit();
+    }
 </script>
 <script type="text/javascript"> 
 	function hours12(date) { return (date.getHours() + 24) % 12 || 12; }
@@ -584,7 +587,25 @@
 	echo "<a href='$folderlink'><img src='media/folderlink.jpg' class='navicon hiddenelement folderlinkbutton menuitem".menustate()."' /></a>";
 	// sort	
 	if (isset($_REQUEST['tags_query'])) {
-		$sql = "SELECT url FROM tags WHERE tag='".$_REQUEST['tags_query']."';";
+		$tags_list = explode("|",$_REQUEST['tags_query']);
+		$from_smt = "";
+		$where_smt = "";
+		if (count($tags_list) == 1) {
+			$sql = "SELECT url FROM ".$_REQUEST['tags_query'].";";
+		}
+		else {
+			for ($i = 1; $i < count($tags_list); $i++) {
+				if ($i == 1) {
+					$from_smt = $tags_list[0].", ".$tags_list[1];
+					$where_smt = $tags_list[0].".url = ".$tags_list[1].".url";
+				}
+				else {
+					$from_smt = $from_smt.", ".$tags_list[$i];
+					$where_smt = $where_smt." AND ".$tags_list[0].".url = ".$tags_list[$i].".url";
+				}
+			}
+			$sql = "SELECT ".$tags_list[0].".url FROM ".$from_smt." WHERE ".$where_smt;
+		}
     	$result = $conn->query($sql);
 
 	    if ($result->num_rows > 0) { 
@@ -959,7 +980,8 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 <center>
 <?php
 	if (isset($_REQUEST['tags_query'])) {
-		echo "Tags: ".$_REQUEST['tags_query']."<br>";
+		$tags_discription = str_replace('|', ' ', $_REQUEST['tags_query']);
+		echo "Tags: ".$tags_discription."<br>";
 	}
 ?>
 <!-- directories -->
@@ -1038,6 +1060,23 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
         	$basedir2 = str_replace('/var/www/html', '', $basedir2);
         	echo "<a href='$basedir2/$entry'>".fileicon("$entry", $filepattern, $addticons, $imgpattern, $exceptionicons, $eipresent)."</a>";
 		}
+	}
+?>
+<?php
+	if (isset($_REQUEST['tags_query'])) {
+    	echo "<span style='font-size:30px;'>Enter tags: </span><input type='textarea' name='tags_query' id='tags_query' style='font-size:20px;background-color:black;color: #3a4472;'></input>&nbsp;<input type='button' value='Submit' style='width:125px;height:40px;font-size:30px;' onclick=\"javascript:sub_form()\" /><br>";
+
+	    $sql = "SHOW TABLES;";
+	    $result = $conn->query($sql);
+
+	    if ($result->num_rows > 0) { 
+	      while($row = $result->fetch_assoc()) {
+	        $current_tag = $row['Tables_in_mediagallery'];
+	        if ($current_tag != "access" && $current_tag != "tags") {
+	            echo " <a href=\"/general/mediagallery/mediagallery.php?tags_query=".$current_tag."\">$current_tag</a>";
+	        }
+	      }
+	    }  
 	}
 ?>
 </center>
