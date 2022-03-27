@@ -113,6 +113,7 @@
   }
 </style>
 <script>
+    this.name = "tags_coll_window";
     function set_tag(tag_name) {
         document.getElementById('new_tag').value = tag_name;
         document.getElementById('set_tags').submit();

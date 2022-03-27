@@ -268,6 +268,9 @@
 	.fullscreenbutton {
 		position:absolute;position:fixed;top:40%;right:20%;font-size:36px;opacity:0.95;z-index:10;
 	}
+	.tagsbutton {
+		position:absolute;position:fixed;top:20%;right:20%;font-size:36px;opacity:0.95;z-index:10;
+	}
 	.reloadbutton {
 		position:absolute;position:fixed;bottom:0%;right:10%;font-size:36px;opacity:0.95;z-index:10;
 	}
@@ -324,6 +327,7 @@
 	a { color: #3391ff; }
 </style>
 <script>
+	this.name = "mediagallery_window";
 	function subform(link) {
 		document.getElementById("basedir").value = link;
 		document.getElementById("prevdir").value = <?php echo "'".$_SESSION['basedir']."'" ?>;
@@ -399,6 +403,10 @@
 		togglemenu();
 		shiftlabels();
 	}
+	function tagsframevisibility(link) {
+		document.getElementById("tagsiframe").src="tags.php?url="+link;
+		document.getElementById("tagsframe").classList.toggle('hiddenelement');
+	}
 	function togglemenu() {
 		var labels = document.getElementsByClassName("menuitem");
 		for(var i = 0; i < labels.length; i++)
@@ -415,6 +423,22 @@
 		}
 		togglemenu();
 	}
+	function tagstoggle() {
+		var labels = document.getElementsByClassName("taglabel");
+		for(var i = 0; i < labels.length; i++)
+		{
+		    labels[i].classList.toggle('hiddenelement');
+		}
+		if (document.getElementById("tags").value == "true") {
+			document.getElementById("tags").value = "false";
+			document.getElementById("tagsbutton").value = " tg";
+		}
+		else {
+			document.getElementById("tags").value = "true";
+			document.getElementById("tagsbutton").value = "[tg]";
+		}
+		//togglemenu();
+	}	
 	function makeicontoggle() {
 		if (document.getElementById("makeicon").value == "true") {
 			document.getElementById("makeicon").value = "false";
@@ -586,7 +610,7 @@
 	echo "<a href='javascript:subform(\"$origdir\")'><img src='media/home.jpg' class='navicon hiddenelement homebutton menuitem".menustate()."' /></a>";
 	echo "<a href='$folderlink'><img src='media/folderlink.jpg' class='navicon hiddenelement folderlinkbutton menuitem".menustate()."' /></a>";
 	// sort	
-	if (isset($_REQUEST['tags_query'])) {
+	if (isset($_REQUEST['tags_query']) && $_REQUEST['tags_query'] != "") {
 		$tags_list = explode("|",$_REQUEST['tags_query']);
 		$from_smt = "";
 		$where_smt = "";
@@ -693,7 +717,7 @@
 		*/
 		$foldericon = "<span class='foldercontainernoicon genlabel'><img src='media/folder.jpg' class='foldericongeneric' /><span class='labelareanonhidden'><br>".substr($link, 0, 10)."</span></span>";
 		$icondir = $_SESSION['basedir']."/"."$link/icon/";
-		if (isset($_REQUEST['tags_query'])) {
+		if (isset($_REQUEST['tags_query']) && $_REQUEST['tags_query'] != "") {
 			//$filepath = preg_replace('/(.*)/s', ' file:///var/www/html/general/medialink/medialink/$1', $link);
 			//$filepath = preg_replace('/(.*)/s', '$1', $link);
 			$filepath = "file:///var/www/html/general/medialink/medialink/".$link;
@@ -704,7 +728,7 @@
 		}
 		//echo $icondir;
 		$picdir = $_SESSION['basedir']."/"."$link/";
-		if (isset($_REQUEST['tags_query'])) {
+		if (isset($_REQUEST['tags_query']) && $_REQUEST['tags_query'] != "") {
 			//$filepath = preg_replace('/(.*)/s', ' file:///var/www/html/general/medialink/medialink/$1', $link);
 			//$filepath = preg_replace('/(.*)/s', 'file:///var/www/html/general/medialink/medialink/$1/test', $link);
 			$filepath = "file:///var/www/html/general/medialink/medialink/".$link;
@@ -799,12 +823,12 @@
 	function videoicon($link, $vidpattern2) {
 		$videoicon = "<span class='videoicon'>$link</span>";
 		$link_noext = preg_replace($vidpattern2, '$1', $link);
-		if (isset($_REQUEST['tags_query'])) {
+		if (isset($_REQUEST['tags_query']) && $_REQUEST['tags_query'] != "") {
 			$link_noext = preg_replace('/.*\\/(.*)[.](mp4|avi|mpg|mpeg|mov|webm|flv|wmv|f4v|m4v)+$/s', '$1', $link);
 		}
 
 		$icondir = $_SESSION['basedir']."/icon/videos/";
-		if (isset($_REQUEST['tags_query'])) {
+		if (isset($_REQUEST['tags_query']) && $_REQUEST['tags_query'] != "") {
 			$filepath = preg_replace('/(.*)\\/.*$/s', ' file:///var/www/html/general/medialink/medialink/$1', $link);
 			$filepath = str_replace('%20', ' ', "$filepath");
 			$icondir = $filepath."/icon/videos/";
@@ -817,7 +841,7 @@
 			$icon3 = str_replace('/var/www/html', '', "$icon2");
 			$videoicon = "<img src='$icon3' class='videoicon' />";
 		}
-		else if (isset($_REQUEST['tags_query'])) {
+		else if (isset($_REQUEST['tags_query']) && $_REQUEST['tags_query'] != "") {
 			$icon2 = str_replace('file://', '', "$iconpath");
 			$icon3 = str_replace('/var/www/html', '', "$icon2");
 			$videoicon = "<img src='$icon3' class='videoicon' />";
@@ -878,6 +902,7 @@
 <input type="button" value=" t " class=<?php echo "\"labelsbutton hiddenelement menuitem".menustate()."\""; ?> id="labelsbutton" onclick="javascript:togglelabels()" />
 <input type="button" value="[&#8801;]" class=<?php echo "\"statebutton hiddenelement menuitem".menustate()."\""; ?> id="statebutton" onclick="javascript:togglestate()" />
 <input type="button" value=" i " class=<?php echo "\"makeiconbutton hiddenelement menuitem".menustate()."\""; ?> id="makeiconbutton" onclick="javascript:makeicontoggle()" />
+<input type="button" value=" tg" class=<?php echo "\"tagsbutton hiddenelement menuitem".menustate()."\""; ?> id="tagsbutton" onclick="javascript:tagstoggle()" />
 <input type="button" value=<?php 
 if ($_REQUEST['copyimg']=="true") {
 echo "\"[c]\"";
@@ -928,8 +953,12 @@ if (isset($_REQUEST['menustate'])) {echo '"'.$_REQUEST['menustate'].'"';}
 else{echo '"false"';}
 
 echo ">
+<input type='hidden' name='tags' id='tags' value='false'>
 <input type='hidden' name='makeicon' id='makeicon' value='false'>
 <input type='hidden' name='copyimg' id='copyimg' value='";
+if (!isset($_REQUEST['tags'])) {
+	echo "<script>tagstoggle()</script>";
+}
 if (isset($_REQUEST['copyimg']) && $_REQUEST['copyimg']=="true") {
 	echo "true";
 }
@@ -979,7 +1008,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 
 <center>
 <?php
-	if (isset($_REQUEST['tags_query'])) {
+	if (isset($_REQUEST['tags_query']) && $_REQUEST['tags_query'] != "") {
 		$tags_discription = str_replace('|', ' ', $_REQUEST['tags_query']);
 		echo "Tags: ".$tags_discription."<br>";
 	}
@@ -989,7 +1018,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 	foreach ($filelist as $entry) {
 		if (preg_match('/.*tags\.url/s', $entry)) {
 			echo "<script>window.open(
-              'http://localhost/general/medialink/tags_collection.php', '_blank');</script>";
+              'http://localhost/general/medialink/tags_collection.php', '_tags_coll_window');</script>";
             echo "<script>window.location = 'http://localhost/general/mediagallery/mediagallery.php';</script>";
 		}
 	}		
@@ -998,7 +1027,15 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 <?php
 	foreach ($filelist as $entry) {
 		if (!preg_match($extpattern, $entry)) {
+			$basedir2 = str_replace('/var/www/html', '', $basedir);
 			echo "<a href=\"javascript:subform('$basedir/$entry')\">".foldericon("$entry", $imgpattern, $specialicons, $addticons, $exceptionicons, $eipresent)."</a>";
+			echo "<a href='javascript:tagsframevisibility(\"".$basedir2."/".$entry."\")' class='taglabel hiddenelement shiftup ";
+			if (isset($_REQUEST['tags'])) {
+				if ($_REQUEST['tags']=='false') {
+					echo "hiddenelement";
+				}
+			}			
+			echo "'>T</a>";
 		}
 	}
 ?>
@@ -1008,13 +1045,23 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 		if (preg_match($imgpattern, $entry)) {
 			$basedir2 = str_replace('/var/www/html', '', $basedir);
 			$image = str_replace('file://', '', "$basedir2/$entry");
-            if ($ext_app_open == "false") {
-            	echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'><img src='$image' class='icon' /></a>";
-            	echo "<input type=\"hidden\" name=\"imagelist[]\" value=\"".$image."\"/>";
-            }
-            else {
-            	echo "<a href='$image'><img src='$image' class='icon' /></a>";
-            }
+        if ($ext_app_open == "false") {
+        	echo "<a href='javascript:viewimg(\"$basedir2/$entry\")'><img src='$image' class='icon' />";
+        }
+        else {
+        	echo "<a href='$image'><img src='$image' class='icon' />";
+        }
+        echo "<a href='javascript:tagsframevisibility(\"".$basedir2."/".$entry."\")' class='taglabel hiddenelement shiftup ";
+				if (isset($_REQUEST['tags'])) {
+					if ($_REQUEST['tags']=='false') {
+						echo "hiddenelement";
+					}
+				}			
+				echo "'>T</a>";
+				echo "</a>";
+				if ($ext_app_open == "false") {
+					echo "<input type=\"hidden\" name=\"imagelist[]\" value=\"".$image."\"/>";
+				}
 		}
 	}
 ?>
@@ -1024,12 +1071,20 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 		if (preg_match($vidpattern, $entry)) {
         	$basedir2 = str_replace('/var/www/html', '', $basedir);
         	if ($ext_app_open == "false") {
-        		echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $vidpattern2)."</a>";
+        		echo "<a href='javascript:viewvid(\"$basedir2/$entry\")'>".videoicon("$entry", $vidpattern2);
         	}
         	else {
         		$video = str_replace('file://', '', "$basedir2/$entry");
-        		echo "<a href='$video'>".videoicon("$entry", $vidpattern2)."</a>";
+        		echo "<a href='$video'>".videoicon("$entry", $vidpattern2);
         	}
+        	echo "<a href='javascript:tagsframevisibility(\"".$basedir2."/".$entry."\")' class='taglabel hiddenelement shiftup ";
+					if (isset($_REQUEST['tags'])) {
+						if ($_REQUEST['tags']=='false') {
+							echo "hiddenelement";
+						}
+					}			
+					echo "'>T</a>";
+					echo "</a>";
         	//$basedir2 = str_replace('file://', 'http://localhost', $basedir2);
         	//echo "<a href='$basedir2/$entry'>".videoicon("$entry", $vidpattern2)."</a>";
 		}
@@ -1073,7 +1128,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 	}
 ?>
 <?php
-	if (isset($_REQUEST['tags_query'])) {
+	if (isset($_REQUEST['tags_query']) && $_REQUEST['tags_query'] != "") {
     	echo "<span style='font-size:30px;'>Enter tags: </span><input type='textarea' name='tags_query' id='tags_query' style='font-size:20px;background-color:black;color: #3a4472;'></input>&nbsp;<input type='button' value='Submit' style='width:125px;height:40px;font-size:30px;' onclick=\"javascript:sub_form()\" /><br>";
 
 	    $sql = "SHOW TABLES;";
@@ -1090,6 +1145,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 	}
 ?>
 </center>
+<div style="background-color:black;width:90%;height:90%;position:fixed;top:5%;left:5%;z-index: 20;" id="tagsframe" class="hiddenelement"><a href='javascript:tagsframevisibility()' style="position:relative;float:right;">[x]</a><br><iframe src="tags.php" style="width:95%;height:88%;position:relative;left:2%;" id="tagsiframe" /></div>
 </form>
 <?php
 	/*$video = "http://localhost/general/medialink/medialink/0_Pornsites/TeamSkeet/riley_reid/povlife_riley_reed_full_hi.mp4";

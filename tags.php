@@ -44,8 +44,12 @@
         font-size: 20px;
         font-family: arial;
     }
+    .closebutton {
+        position:absolute;position:fixed;bottom:0%;right:0px;font-size:36px;opacity:0.95;
+    }
 </style>
 <script>
+    this.name = "tags_window";
     function set_tag(tag_name) {
         document.getElementById('new_tag').value = tag_name;
         document.getElementById('set_tags').submit();
@@ -53,6 +57,9 @@
     function set_del(tag_name) {
         document.getElementById('del_tag').value = tag_name;
         document.getElementById('set_tags').submit();
+    }
+    function closewindow() {
+        window.close();
     }
 </script>
 </head>
@@ -68,6 +75,7 @@
         $url = str_replace('http://localhost/general/medialink/medialink/', '', "$url");
         $url = str_replace('file:///var/www/html/general/medialink/medialink/', '', "$url");
         $url = str_replace('/general/medialink/medialink/', '', "$url");
+        $url = str_replace('file://', '', "$url");
     }
 ?>
 <center>Url: <input type='textarea' name='url' id='url' style='font-size:20px;background-color:black;color: #3a4472;width:1400px' value='<?php echo $url ?>'></input><br>Tags: 
