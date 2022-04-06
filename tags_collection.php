@@ -135,17 +135,14 @@
 
     function find_thumb($tag) {
       $tag_thumb_name = "/general/medialink/media/".$tag.".jpg";
-      $image_path = "http://localhost".$tag_thumb_name;
-      //echo @getimagesize($image_path);
+      $image_path = "/var/www/html".$tag_thumb_name;
       if (!file_exists($image_path)) {
-        //$tag_thumb_name = "/general/mediagallery/media/folder.jpg";
+        $tag_thumb_name = "/general/mediagallery/media/folder.jpg";
       }
       return $tag_thumb_name;
     }
 
     echo "<span style='font-size:30px;'>Enter tags: </span><input type='textarea' name='tags_query' id='tags_query' style='font-size:20px;background-color:black;color: #3a4472;'></input>&nbsp;<input type='button' value='Submit' style='width:125px;height:40px;font-size:30px;' onclick=\"javascript:sub_form()\" /><br>";
-
-    //echo count($comb_tags);
 
     for ($i = 0; $i < count($comb_tags); $i++) {
       echo " <span class='foldercontainer videoicon'><a href='http://localhost/general/mediagallery/mediagallery.php?tags_query=".$comb_tags[$i]."' target='_blank'><img src='".find_thumb($comb_tags[$i])."' class='foldericon' /><br><span class='linktext'>".$comb_tags[$i]."</span></a><br></span>";
