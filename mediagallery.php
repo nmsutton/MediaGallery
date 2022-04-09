@@ -329,6 +329,36 @@
 		border: 0px rgb(55,55,55) solid;
 	}
 	a { color: #3391ff; }
+  .tag_button {
+      border-radius: 15px 15px;
+      background: #132339;
+      color:#4a6591;
+      padding: 5px;
+      margin:0px;
+      text-align: center;
+      text-decoration: none;
+      z-index: 30;
+  }
+  a.tag_button:link {color:#4a6591}
+  a.tag_button:visited {color:#4a6591}
+  a.tag_button:hover {color:#4a6591}
+  a.tag_button:active {color:#4a6591}
+  .tag_button2 {
+      border-radius: 5px 5px;
+      background: #132339;
+      color:#4a6591;
+      padding: 2px;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      margin:0px;
+      text-align: center;
+      text-decoration: none;
+      /*z-index: 30;*/
+  }
+  a.tag_button2:link {color:#4a6591}
+  a.tag_button2:visited {color:#4a6591}
+  a.tag_button2:hover {color:#4a6591}
+  a.tag_button2:active {color:#4a6591}
 </style>
 <script>
 	this.name = "mediagallery_window";
@@ -1023,7 +1053,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 		if (!preg_match($extpattern, $entry)) {
 			$basedir2 = str_replace('/var/www/html', '', $basedir);
 			echo "<a href=\"javascript:subform('$basedir/$entry')\">".foldericon("$entry", $imgpattern, $specialicons, $addticons, $exceptionicons, $eipresent)."</a>";
-			echo "<a href='javascript:tagsframevisibility(\"".$basedir2."/".$entry."\")' class='taglabel shiftup shiftleft ";
+			echo "<a href='javascript:tagsframevisibility(\"".$basedir2."/".$entry."\")' class='tag_button2 taglabel shiftup shiftleft ";
 			if (isset($_REQUEST['tags']) && $_REQUEST['tags']=='true') {}
 			else {echo "hiddenelement";}		
 			echo "'>T</a>";
@@ -1042,7 +1072,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
         else {
         	echo "<a href='$image'><img src='$image' class='icon' />";
         }
-        echo "<a href='javascript:tagsframevisibility(\"".$basedir2."/".$entry."\")' class='taglabel shiftup shiftleft ";
+        echo "<a href='javascript:tagsframevisibility(\"".$basedir2."/".$entry."\")' class='tag_button2 taglabel shiftup shiftleft ";
 				if (isset($_REQUEST['tags']) && $_REQUEST['tags']=='true') {}
 				else {echo "hiddenelement";}		
 				echo "'>T</a>";
@@ -1065,7 +1095,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
         		$video = str_replace('file://', '', "$basedir2/$entry");
         		echo "<a href='$video'>".videoicon("$entry", $vidpattern2);
         	}
-        	echo "<a href='javascript:tagsframevisibility(\"".$basedir2."/".$entry."\")' class='taglabel shiftup shiftleft ";
+        	echo "<a href='javascript:tagsframevisibility(\"".$basedir2."/".$entry."\")' class='tag_button2 taglabel shiftup shiftleft ";
 					if (isset($_REQUEST['tags']) && $_REQUEST['tags']=='true') {}
 					else {echo "hiddenelement";}			
 					echo "'>T</a>";
@@ -1128,7 +1158,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 	}
 ?>
 </center>
-<div style="background-color:black;width:90%;height:90%;position:fixed;top:5%;left:5%;z-index: 20;" id="tagsframe" class="hiddenelement"><a href='javascript:tagsframevisibility()' style="position:relative;float:right;">[x]</a><br><iframe src="tags.php" style="width:95%;height:88%;position:relative;left:2%;" id="tagsiframe" /></div>
+<div style="background-color:black;width:90%;height:90%;position:fixed;top:5%;left:5%;z-index: 20;" id="tagsframe" class="hiddenelement"><a href='javascript:tagsframevisibility()' style="position:relative;float:right;" class='tag_button'>[x]</a><br><iframe src="tags.php" style="width:95%;height:88%;position:relative;left:2%;" id="tagsiframe" /></div>
 </form>
 <?php
 	/*$video = "http://localhost/general/medialink/medialink/0_Pornsites/TeamSkeet/riley_reid/povlife_riley_reed_full_hi.mp4";

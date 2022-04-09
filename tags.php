@@ -47,6 +47,25 @@
     .closebutton {
         position:absolute;position:fixed;bottom:0%;right:0px;font-size:36px;opacity:0.95;
     }
+    .tag_button {
+        border-radius: 15px 15px;
+        background: #132339;
+        color:#4a6591;
+        padding: 5px;
+        line-height: 35px;
+        margin:0px;
+        text-align: center;
+        width: 100px;
+        height: 50px;
+        text-decoration: none;
+    }
+    a.tag_button:link {color:#4a6591}
+    a.tag_button:visited {color:#4a6591}
+    a.tag_button:hover {color:#4a6591}
+    a.tag_button:active {color:#4a6591}
+    .formatting_1 {
+        line-height: 40px;
+    }
 </style>
 <script>
     this.name = "tags_window";
@@ -64,6 +83,7 @@
 </script>
 </head>
 <body>
+<span class="formatting_1">
 <form name='set_tags' id='set_tags' action='tags.php' method='POST'>
 <?php
     $url = '';
@@ -78,7 +98,7 @@
         $url = str_replace('file://', '', "$url");
     }
 ?>
-<center>Url: <input type='textarea' name='url' id='url' style='font-size:20px;background-color:black;color: #3a4472;width:1400px' value='<?php echo $url ?>'></input><br>Tags: 
+<center>Url: <input type='textarea' name='url' id='url' style='font-size:20px;background-color:black;color: #3a4472;width:1200px' value='<?php echo $url ?>'></input><br>Tags: 
 <?php
     if (isset($_REQUEST['new_tag']) && $_REQUEST['new_tag'] != '' && $url != '') {
         $tag = $_REQUEST['new_tag'];
@@ -109,8 +129,8 @@
 
             if ($result2->num_rows > 0) { 
                 while($row2 = $result2->fetch_assoc()) {        
-                    echo "&nbsp;".$table;
-                    echo " <a href=\"javascript:set_del('".$table."')\">[X]</a>";
+                    echo "&nbsp;<span class='tag_button'>".$table;
+                    echo " <a href=\"javascript:set_del('".$table."')\" class='tag_button'>[X]</a></span>";
                 }
             }
         }
@@ -118,6 +138,7 @@
 ?>
 <br>
 New tag: <input type='textarea' name='new_tag' id='new_tag' style='font-size:20px;background-color:black;color: #3a4472;'></input>
+</span>
 <br>
 <input type='hidden' name='del_tag' id='del_tag' />
 <br><input type='submit' value='submit' style='font-size:20px' /><br><br>
@@ -129,7 +150,7 @@ New tag: <input type='textarea' name='new_tag' id='new_tag' style='font-size:20p
       while($row = $result->fetch_assoc()) {
         $current_tag = $row['Tables_in_mediagallery'];
         if ($current_tag != "access" && $current_tag != "tags") {
-            echo " <a href=\"javascript:set_tag('".$current_tag."')\">$current_tag</a>";
+            echo " <a href=\"javascript:set_tag('".$current_tag."')\" class='tag_button'>$current_tag</a>";
         }
       }
     }  
