@@ -133,20 +133,45 @@
 <?php
     include("comb_tags.php");
 
-    function find_thumb($tag) {
+    function find_thumb($tag, $conn) {
       $tag_thumb_name = "/general/medialink/media/".$tag.".jpg";
       $image_path = "/var/www/html".$tag_thumb_name;
+      $imgpattern = '/.*[.](jpg|JPG|png|gif|jpeg|tif|webp)+$/s';
+
+      $tags_list = explode("|",$tag);
+      $icon_found = false;
       if (!file_exists($image_path)) {
-        $tag_thumb_name = "/general/mediagallery/media/folder.jpg";
+        for ($i = 1; $i < count($tags_list); $i++) {
+          $tag_thumb_name2 = "/general/medialink/media/".$tags_list[$i].".jpg";
+          $image_path2 = "/var/www/html".$tag_thumb_name2;
+          if (file_exists($image_path2)) {
+            $tag_thumb_name = $tag_thumb_name2;
+            $icon_found = true;
+          }
+        }
+        if ($icon_found == false) {
+          $first_tag = $tags_list[0];
+          $sql = "SELECT * FROM ".$first_tag.";";
+          $result = $conn->query($sql);
+
+          if ($result->num_rows > 0) { 
+            while($row = $result->fetch_assoc()) {
+              $current_file = $row['url'];
+              if (preg_match($imgpattern, $current_file)) {
+                $tag_thumb_name = "/general/medialink/medialink/".$current_file;
+                $icon_found = true;
+              }
+            }
+          }
+        }
+        if ($icon_found == false) {
+          $tag_thumb_name = "/general/mediagallery/media/folder.jpg";
+        }
       }
       return $tag_thumb_name;
     }
 
     echo "<span style='font-size:30px;'>Enter tags: </span><input type='textarea' name='tags_query' id='tags_query' style='font-size:20px;background-color:black;color: #3a4472;'></input>&nbsp;<input type='button' value='Submit' style='width:125px;height:40px;font-size:30px;' onclick=\"javascript:sub_form()\" /><br>";
-
-    for ($i = 0; $i < count($comb_tags); $i++) {
-      echo " <span class='foldercontainer videoicon'><a href='http://localhost/general/mediagallery/mediagallery.php?tags_query=".$comb_tags[$i]."' target='_blank'><img src='".find_thumb($comb_tags[$i])."' class='foldericon' /><br><span class='linktext'>".$comb_tags[$i]."</span></a><br></span>";
-    }
 
     $sql = "SHOW TABLES;";
     $result = $conn->query($sql);
@@ -155,10 +180,14 @@
       while($row = $result->fetch_assoc()) {
         $current_tag = $row['Tables_in_mediagallery'];
         if ($current_tag != "access" && $current_tag != "tags") {
-            echo " <span class='foldercontainer videoicon'><a href='http://localhost/general/mediagallery/mediagallery.php?tags_query=$current_tag' target='_blank'><img src='".find_thumb($current_tag)."' class='foldericon' /><br><span class='linktext'>$current_tag</span></a><br></span>";
+            echo " <span class='foldercontainer videoicon'><a href='http://localhost/general/mediagallery/mediagallery.php?tags_query=$current_tag' target='_blank'><img src='".find_thumb($current_tag, $conn)."' class='foldericon' /><br><span class='linktext'>$current_tag</span></a><br></span>";
         }
       }
     }  
+
+    for ($i = 0; $i < count($comb_tags); $i++) {
+      echo " <span class='foldercontainer videoicon'><a href='http://localhost/general/mediagallery/mediagallery.php?tags_query=".$comb_tags[$i]."' target='_blank'><img src='".find_thumb($comb_tags[$i], $conn)."' class='foldericon' /><br><span class='linktext'>".$comb_tags[$i]."</span></a><br></span>";
+    }
 ?>
 </center>
 </form>

@@ -1151,7 +1151,7 @@ echo "<input type='hidden' name='ext_app_open' id='ext_app_open' value='".$ext_a
 	      while($row = $result->fetch_assoc()) {
 	        $current_tag = $row['Tables_in_mediagallery'];
 	        if ($current_tag != "access" && $current_tag != "tags") {
-	            echo " <a href=\"/general/mediagallery/mediagallery.php?tags_query=".$current_tag."\">$current_tag</a>";
+	            echo " <a href=\"/general/mediagallery/mediagallery.php?tags_query=".$current_tag."\" class='tag_button2'>$current_tag</a>";
 	        }
 	      }
 	    }  
